@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-400 mt-20">
-      <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-2 md:grid-cols-5 gap-10">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-14 grid grid-cols-2 md:grid-cols-5 gap-10">
         {/* Brand */}
         <div className="col-span-2 md:col-span-2">
           <div className="flex items-center gap-2.5 mb-4">
@@ -50,9 +50,9 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-gray-500">© 2026 Surtitiendas Galván. Todos los derechos reservados.</p>
-          <div className="flex items-center gap-3">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-gray-500 text-center">© 2026 Surtitiendas Galván. Todos los derechos reservados.</p>
+          <div className="flex items-center flex-wrap justify-center gap-2">
             <span className="text-xs text-gray-500">Aceptamos:</span>
             {['Visa', 'Mastercard', 'PSE', 'Nequi', 'Daviplata', 'Efectivo'].map(m => (
               <span key={m} className="border border-gray-700 text-gray-400 text-[10px] px-2 py-0.5 rounded-full tracking-wide">

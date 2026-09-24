@@ -45,11 +45,23 @@ export interface Order {
   date: string;
   status: OrderStatus;
   items: OrderItem[];
+  subtotal: number;
+  discountAmount: number;
+  discountReason: string;
   total: number;
   city: string;
   address: string;
   paymentMethod: string;
   deliveryMethod: string;
+}
+
+// La compra número 10 (sin contar canceladas) recibe un 10% de descuento único — la lógica real vive en el backend
+// (CheckoutUseCase); esto solo sirve para mostrar una vista previa antes de pagar.
+export const LOYALTY_MILESTONE_ORDER_NUMBER = 10;
+export const LOYALTY_DISCOUNT_RATE = 0.10;
+
+export function countValidPurchases(orders: Order[]): number {
+  return orders.filter(o => o.status !== 'CANCELADO').length;
 }
 
 export interface CartSyncItem {
@@ -87,6 +99,9 @@ interface OrderDTO {
   shipping_address: string;
   payment_method: string;
   delivery_method: string;
+  subtotal: string;
+  discount_amount: string;
+  discount_reason: string;
   total: string;
   lines: OrderLineDTO[];
   created_at: string;
@@ -106,6 +121,9 @@ function adaptOrder(dto: OrderDTO): Order {
       qty: line.quantity,
       price: Number(line.unit_price),
     })),
+    subtotal: Number(dto.subtotal),
+    discountAmount: Number(dto.discount_amount),
+    discountReason: dto.discount_reason,
     total: Number(dto.total),
     city: dto.shipping_city,
     address: dto.shipping_address,

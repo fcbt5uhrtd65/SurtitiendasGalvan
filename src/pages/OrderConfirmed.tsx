@@ -5,7 +5,9 @@ import { formatPrice } from '../data/products';
 export default function OrderConfirmed() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { orderId, total } = (location.state ?? {}) as { orderId?: string; total?: number };
+  const { orderId, total, discountAmount, discountReason } = (location.state ?? {}) as {
+    orderId?: string; total?: number; discountAmount?: number; discountReason?: string;
+  };
 
   const deliveryDate = new Date(Date.now() + 3 * 86400000).toLocaleDateString('es-CO', {
     weekday: 'long', day: 'numeric', month: 'long',
@@ -23,6 +25,13 @@ export default function OrderConfirmed() {
       <p className="text-gray-500 text-sm mb-8">
         Gracias por tu compra. Hemos recibido tu pedido y te notificaremos cuando esté en camino.
       </p>
+
+      {!!discountAmount && (
+        <div className="flex items-center gap-2.5 text-sm text-[#C84B11] bg-orange-50 border border-orange-200 px-4 py-3 mb-6 text-left">
+          <span className="flex-shrink-0"><Check size={16} /></span>
+          <span>{discountReason || `Se aplicó un descuento de fidelidad de ${formatPrice(discountAmount)}.`}</span>
+        </div>
+      )}
 
       <div className="border border-gray-200 p-6 text-left space-y-3 mb-8">
         {[

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import { useStore } from '../context/StoreContext';
+import Countdown from './Countdown';
+import { FLASH_SALE_END } from '../data/products';
 import {
   Search, ShoppingCart, Heart, User, Menu, X, ChevronDown, Truck, Gift, Trophy, CreditCard,
   Package, LogOut, PencilRuler, Sparkles, Droplets, FlaskConical, BookOpen, Palette, Home as HomeIcon,
@@ -59,7 +61,7 @@ export default function Header() {
     <>
       {/* Announcement bar */}
       <div className="bg-slate-800 text-gray-200 text-xs">
-        <div className="max-w-7xl mx-auto px-6 h-10 flex items-center justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-10 flex items-center justify-between gap-6">
           <div className="hidden md:flex items-center divide-x divide-slate-600">
             <div className="flex items-center gap-2 pr-4">
               <span className="text-gray-400"><Truck size={14} /></span>
@@ -86,14 +88,28 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Flash sale promo strip */}
+      <NavLink
+        to="/categories/ofertas"
+        className="block bg-[#C84B11] text-white hover:bg-[#a83a0d] transition-colors"
+      >
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-9 flex items-center justify-center gap-2.5 text-xs">
+          <span className="flex-shrink-0"><Gift size={14} /></span>
+          <span className="font-semibold whitespace-nowrap">Ofertas por tiempo limitado</span>
+          <span className="hidden sm:inline text-white/80">· Termina en</span>
+          <Countdown endTime={FLASH_SALE_END} className="hidden sm:flex scale-90" />
+          <span className="font-bold underline underline-offset-2 whitespace-nowrap ml-1">Ver ofertas →</span>
+        </div>
+      </NavLink>
+
       {/* Main header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center gap-8 h-16">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="flex items-center gap-3 md:gap-8 h-auto md:h-16 py-3 md:py-0 flex-wrap md:flex-nowrap">
             {/* Logo */}
             <button
               onClick={() => navigate('/home')}
-              className="flex-shrink-0 flex items-center gap-2.5"
+              className="order-1 flex-shrink-0 flex items-center gap-2.5"
             >
               <div className="w-9 h-9 rounded-xl bg-[#C84B11] flex items-center justify-center text-white">
                 <HomeIcon size={18} />
@@ -105,7 +121,7 @@ export default function Header() {
             </button>
 
             {/* Search */}
-            <div className="flex-1 max-w-2xl relative" ref={searchRef}>
+            <div className="order-3 md:order-2 w-full md:w-auto md:flex-1 max-w-2xl relative" ref={searchRef}>
               <div className="flex items-center border border-gray-300 rounded-full focus-within:border-gray-900 transition-colors bg-white pr-1">
                 <select
                   value=""
@@ -184,12 +200,12 @@ export default function Header() {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-1 flex-shrink-0">
+            <div className="order-2 md:order-3 ml-auto md:ml-0 flex items-center gap-1 flex-shrink-0">
               {/* Account with dropdown */}
               <div className="relative" ref={accountRef}>
                 <button
                   onClick={() => setAccountOpen(o => !o)}
-                  className="flex items-center gap-1.5 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-600 hover:text-gray-900"
+                  className="flex items-center gap-1.5 px-2.5 md:px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-600 hover:text-gray-900"
                 >
                   {currentUser ? (
                     <div className="w-6 h-6 bg-gray-900 flex items-center justify-center text-white text-[10px] font-bold rounded-full flex-shrink-0">
@@ -198,10 +214,10 @@ export default function Header() {
                   ) : (
                     <User size={20} />
                   )}
-                  <span className="text-sm font-medium max-w-[90px] truncate">
+                  <span className="hidden sm:inline text-sm font-medium max-w-[90px] truncate">
                     {currentUser ? `Hola, ${currentUser.name.split(' ')[0]}` : 'Mi cuenta'}
                   </span>
-                  <ChevronDown size={13} />
+                  <span className="hidden sm:inline"><ChevronDown size={13} /></span>
                 </button>
 
                 {accountOpen && (
@@ -257,7 +273,7 @@ export default function Header() {
 
         {/* Nav bar */}
         <div className="border-t border-gray-100">
-          <div className="max-w-7xl mx-auto px-6 flex items-center gap-1 h-12 overflow-x-auto">
+          <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center gap-1 h-12 overflow-x-auto">
             {/* All categories */}
             <div
               className="relative flex-shrink-0"

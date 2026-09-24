@@ -41,3 +41,47 @@ def test_me_requiere_autenticacion():
     client = APIClient()
     response = client.get('/api/v1/auth/me/')
     assert response.status_code == 401
+
+
+def test_password_reset_request_no_revela_si_el_correo_existe(customer_user, mailoutbox):
+    client = APIClient()
+
+    response_existente = client.post('/api/v1/auth/password-reset/', {'email': customer_user.email})
+    assert response_existente.status_code == 200
+
+    response_inexistente = client.post('/api/v1/auth/password-reset/', {'email': 'nadie@example.com'})
+    assert response_inexistente.status_code == 200
+
+    assert len(mailoutbox) == 1
+    assert mailoutbox[0].to == [customer_user.email]
+
+
+def test_password_reset_confirm_cambia_la_contrasena(customer_user):
+    from django.contrib.auth.tokens import default_token_generator
+    from django.utils.encoding import force_bytes
+    from django.utils.http import urlsafe_base64_encode
+
+    uid = urlsafe_base64_encode(force_bytes(customer_user.pk))
+    token = default_token_generator.make_token(customer_user)
+
+    client = APIClient()
+    response = client.post('/api/v1/auth/password-reset/confirm/', {
+        'uid': uid, 'token': token, 'new_password': 'nuevaClave123',
+    })
+    assert response.status_code == 200
+
+    login = client.post('/api/v1/auth/login/', {'email': customer_user.email, 'password': 'nuevaClave123'})
+    assert login.status_code == 200
+
+
+def test_password_reset_confirm_con_token_invalido_falla(customer_user):
+    from django.utils.encoding import force_bytes
+    from django.utils.http import urlsafe_base64_encode
+
+    uid = urlsafe_base64_encode(force_bytes(customer_user.pk))
+
+    client = APIClient()
+    response = client.post('/api/v1/auth/password-reset/confirm/', {
+        'uid': uid, 'token': 'token-invalido', 'new_password': 'nuevaClave123',
+    })
+    assert response.status_code == 400

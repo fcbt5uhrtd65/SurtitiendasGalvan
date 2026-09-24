@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router';
 import { useStore } from '../context/StoreContext';
-import { Package, Heart, MapPin, CreditCard, Tag, Bell, HelpCircle, LogOut, ChevronRight } from '../components/Icons';
+import { LOYALTY_MILESTONE_ORDER_NUMBER, countValidPurchases } from '../services/orders.service';
+import { Package, Heart, MapPin, CreditCard, Gift, Bell, HelpCircle, LogOut, ChevronRight } from '../components/Icons';
 
 export default function Account() {
   const navigate = useNavigate();
   const { currentUser, logout, orders, favorites } = useStore();
+  const validPurchases = countValidPurchases(orders);
 
   // Not logged in
   if (!currentUser) {
@@ -63,7 +65,7 @@ export default function Account() {
     { icon: Heart,      label: 'Mis favoritos',  desc: `${favorites.length} producto${favorites.length !== 1 ? 's' : ''} guardado${favorites.length !== 1 ? 's' : ''}`, to: '/favorites' },
     { icon: MapPin,     label: 'Direcciones',    desc: 'Gestión de direcciones de entrega', to: '/addresses' },
     { icon: CreditCard, label: 'Métodos de pago',desc: 'Tarjetas y cuentas bancarias',      to: '/payment-methods' },
-    { icon: Tag,        label: 'Cupones',        desc: 'GALVAN10 (10%) · SURTE15 (15%)',    to: '/coupons', badge: '2' },
+    { icon: Gift,       label: 'Recompensa de fidelidad', desc: validPurchases >= LOYALTY_MILESTONE_ORDER_NUMBER ? 'Ya usaste tu 10% de regalo' : `${validPurchases}/${LOYALTY_MILESTONE_ORDER_NUMBER} compras para tu 10% de regalo`, to: '/coupons' },
     { icon: Bell,       label: 'Notificaciones', desc: 'Preferencias de alertas y avisos',  to: '/notifications' },
     { icon: HelpCircle, label: 'Ayuda y soporte',desc: 'Centro de ayuda y contacto',        to: '/help' },
   ];

@@ -45,6 +45,8 @@ class Order(BaseModel):
     delivery_method = models.CharField(max_length=50, default='DOMICILIO')
     subtotal = models.DecimalField(max_digits=12, decimal_places=2)
     total = models.DecimalField(max_digits=12, decimal_places=2)
+    discount_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    discount_reason = models.CharField(max_length=255, blank=True)
 
     class Meta(BaseModel.Meta):
         db_table = 'commerce_order'

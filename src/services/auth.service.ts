@@ -92,6 +92,22 @@ export async function getCurrentUser(): Promise<User | null> {
   }
 }
 
+export async function requestPasswordReset(email: string): Promise<void> {
+  await apiFetch<void>('/auth/password-reset/', {
+    method: 'POST',
+    auth: false,
+    body: JSON.stringify({ email }),
+  });
+}
+
+export async function confirmPasswordReset(uid: string, token: string, newPassword: string): Promise<void> {
+  await apiFetch<void>('/auth/password-reset/confirm/', {
+    method: 'POST',
+    auth: false,
+    body: JSON.stringify({ uid, token, new_password: newPassword }),
+  });
+}
+
 export function logout(): void {
   clearTokens();
 }

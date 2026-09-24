@@ -55,7 +55,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'customer', 'customer_name', 'customer_email', 'status',
             'shipping_city', 'shipping_address', 'payment_method', 'delivery_method',
-            'subtotal', 'total', 'lines', 'status_history', 'created_at',
+            'subtotal', 'discount_amount', 'discount_reason', 'total', 'lines', 'status_history', 'created_at',
         ]
         read_only_fields = fields
 

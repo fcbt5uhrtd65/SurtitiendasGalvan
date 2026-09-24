@@ -11,6 +11,11 @@ from apps.commerce.infrastructure.models import Cart, Order, OrderLine, OrderSta
 from apps.commerce.infrastructure.tasks import send_order_confirmation_email, send_order_status_update_email
 from shared.domain.exceptions import EntityNotFoundError
 
+# Regalo de fidelidad: la compra número 10 (sin contar canceladas) recibe un 10% de descuento único.
+LOYALTY_MILESTONE_ORDER_NUMBER = 10
+LOYALTY_DISCOUNT_RATE = Decimal('0.10')
+LOYALTY_DISCOUNT_REASON = '¡Gracias por tu compra número 10! Regalo de fidelidad: 10% de descuento.'
+
 
 @dataclass
 class CheckoutInput:
@@ -36,6 +41,9 @@ class CheckoutUseCase:
             variant = ProductVariant.objects.select_for_update().get(id=item.variant_id)
             if item.quantity > variant.stock:
                 raise StockInsuficienteError(variant.product.name, variant.stock)
+
+        previous_orders = Order.objects.filter(customer=customer).exclude(status=OrderStatus.CANCELADO).count()
+        order_number = previous_orders + 1
 
         order = Order.objects.create(
             customer=customer,
@@ -65,9 +73,17 @@ class CheckoutUseCase:
             order_subtotal += price.amount * item.quantity
             ProductVariant.objects.filter(id=variant.id).update(stock=F('stock') - item.quantity)
 
+        discount_amount = Decimal('0')
+        discount_reason = ''
+        if order_number == LOYALTY_MILESTONE_ORDER_NUMBER:
+            discount_amount = (order_subtotal * LOYALTY_DISCOUNT_RATE).quantize(Decimal('0.01'))
+            discount_reason = LOYALTY_DISCOUNT_REASON
+
         order.subtotal = order_subtotal
-        order.total = order_subtotal
-        order.save(update_fields=['subtotal', 'total'])
+        order.discount_amount = discount_amount
+        order.discount_reason = discount_reason
+        order.total = order_subtotal - discount_amount
+        order.save(update_fields=['subtotal', 'discount_amount', 'discount_reason', 'total'])
 
         OrderStatusHistory.objects.create(order=order, from_status='', to_status=OrderStatus.PENDIENTE)
         cart.items.all().delete()

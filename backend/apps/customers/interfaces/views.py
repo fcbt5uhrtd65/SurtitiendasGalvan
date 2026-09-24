@@ -7,7 +7,7 @@ from apps.customers.application.use_cases import DeactivateCustomerUseCase, Upda
 from apps.customers.infrastructure.models import Customer, CustomerAddress
 from apps.customers.infrastructure.serializers import CustomerAddressSerializer, CustomerSerializer
 from apps.customers.interfaces.filters import CustomerFilter
-from apps.identity.interfaces.permissions import IsAdmin
+from apps.identity.interfaces.permissions import IsAdmin, IsAdminOrVendedor
 from shared.interfaces.viewsets import SoftDeleteModelViewSet
 
 UPDATABLE_FIELDS = ('phone', 'document_type', 'document_number')
@@ -21,6 +21,8 @@ class CustomerViewSet(SoftDeleteModelViewSet):
     def get_permissions(self):
         if self.action == 'me':
             return [IsAuthenticated()]
+        if self.action in ('list', 'retrieve'):
+            return [IsAdminOrVendedor()]
         return [IsAdmin()]
 
     @action(detail=False, methods=['get', 'patch'])

@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useStore } from '../context/StoreContext';
-import { formatPrice } from '../data/products';
+import { formatPrice, FREE_SHIPPING_THRESHOLD } from '../data/products';
+import { LOYALTY_MILESTONE_ORDER_NUMBER, LOYALTY_DISCOUNT_RATE, countValidPurchases } from '../services/orders.service';
 import { ApiError } from '../services/http';
 import { Check } from '../components/Icons';
+import FreeShippingBar from '../components/FreeShippingBar';
+import LoyaltyBanner from '../components/LoyaltyBanner';
 
 type Step = 0 | 1 | 2 | 3 | 4;
 const steps = ['Datos personales', 'Dirección', 'Método de entrega', 'Método de pago', 'Resumen y confirmación'];
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const { cart, cartTotal, placeOrder, currentUser, authLoading } = useStore();
+  const { cart, cartTotal, orders, placeOrder, currentUser, authLoading } = useStore();
   const [step, setStep] = useState<Step>(0);
   const [delivery, setDelivery] = useState<'home' | 'store'>('home');
   const [payment, setPayment] = useState<'card' | 'transfer' | 'cod'>('card');
@@ -25,8 +28,10 @@ export default function Checkout() {
     if (!authLoading && !currentUser) navigate('/login');
   }, [authLoading, currentUser, navigate]);
 
-  const shipping = cartTotal >= 80000 ? 0 : 9000;
-  const total = cartTotal + shipping;
+  const shipping = cartTotal >= FREE_SHIPPING_THRESHOLD ? 0 : 9000;
+  const isLoyaltyMilestone = countValidPurchases(orders) + 1 === LOYALTY_MILESTONE_ORDER_NUMBER;
+  const discount = isLoyaltyMilestone ? Math.round(cartTotal * LOYALTY_DISCOUNT_RATE) : 0;
+  const total = cartTotal + shipping - discount;
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
   const paymentLabel = { card: 'Tarjeta crédito/débito', transfer: 'Transferencia electrónica', cod: 'Pago contra entrega' };
@@ -42,7 +47,9 @@ export default function Checkout() {
         paymentMethod: paymentLabel[payment],
         deliveryMethod: deliveryLabel[delivery],
       });
-      navigate('/order-confirmed', { state: { orderId: order.id, total: order.total } });
+      navigate('/order-confirmed', {
+        state: { orderId: order.id, total: order.total, discountAmount: order.discountAmount, discountReason: order.discountReason },
+      });
     } catch (error) {
       setSubmitError(error instanceof ApiError ? error.message : 'No se pudo confirmar el pedido. Inténtalo de nuevo.');
       setSubmitting(false);
@@ -232,8 +239,10 @@ export default function Checkout() {
         </div>
 
         {/* Summary sidebar */}
-        <div>
-          <div className="border border-gray-200 p-5 sticky top-36">
+        <div className="sticky top-36 space-y-4">
+          <FreeShippingBar cartTotal={cartTotal} />
+          <LoyaltyBanner orders={orders} />
+          <div className="border border-gray-200 p-5">
             <h3 className="font-bold text-gray-900 text-sm mb-4" style={{ fontFamily: 'Outfit, sans-serif' }}>Resumen del pedido</h3>
             <div className="space-y-3 divide-y divide-gray-50">
               {cart.map(({ product, quantity }) => (
@@ -250,6 +259,12 @@ export default function Checkout() {
             <div className="border-t border-gray-100 mt-4 pt-4 space-y-2 text-sm">
               <div className="flex justify-between text-gray-500"><span>Subtotal</span><span>{formatPrice(cartTotal)}</span></div>
               <div className="flex justify-between text-gray-500"><span>Envío</span><span>{shipping === 0 ? 'Gratis' : formatPrice(shipping)}</span></div>
+              {discount > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Descuento fidelidad (10ª compra)</span>
+                  <span className="text-green-600 font-medium">-{formatPrice(discount)}</span>
+                </div>
+              )}
               <div className="flex justify-between font-bold text-gray-900 text-base border-t border-gray-100 pt-2">
                 <span>Total</span>
                 <span style={{ fontFamily: 'Outfit, sans-serif' }}>{formatPrice(total)}</span>

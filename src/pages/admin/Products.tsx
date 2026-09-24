@@ -30,6 +30,7 @@ export default function AdminProducts() {
   const [stockVal, setStockVal] = useState('');
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const [actionError, setActionError] = useState('');
 
   const filtered = products
     .filter(p => {
@@ -82,8 +83,22 @@ export default function AdminProducts() {
 
   const saveStock = async (id: string) => {
     const n = parseInt(stockVal);
-    if (!isNaN(n) && n >= 0) await updateProduct(id, { stock: n });
-    setEditingStock(null);
+    if (isNaN(n) || n < 0) { setEditingStock(null); return; }
+    try {
+      await updateProduct(id, { stock: n });
+      setEditingStock(null);
+    } catch (error) {
+      setActionError(error instanceof ApiError ? error.message : 'No se pudo actualizar el stock. Inténtalo de nuevo.');
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    setDeleteConfirm(null);
+    try {
+      await deleteProduct(id);
+    } catch (error) {
+      setActionError(error instanceof ApiError ? error.message : 'No se pudo eliminar el producto. Inténtalo de nuevo.');
+    }
   };
 
   return (
@@ -102,6 +117,18 @@ export default function AdminProducts() {
           Nuevo producto
         </button>
       </div>
+
+      {actionError && (
+        <div className="mb-4 flex items-start gap-2.5 text-xs text-red-600 bg-red-50 border border-red-100 px-3 py-2.5">
+          <svg className="flex-shrink-0 mt-0.5" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span className="flex-1">{actionError}</span>
+          <button onClick={() => setActionError('')} className="text-red-400 hover:text-red-600">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      )}
 
       {/* Filters bar */}
       <div className="bg-white border border-gray-200 p-4 flex flex-wrap items-center gap-3 mb-4">
@@ -223,7 +250,7 @@ export default function AdminProducts() {
                     </button>
                     {deleteConfirm === p.id ? (
                       <>
-                        <button onClick={() => { deleteProduct(p.id); setDeleteConfirm(null); }}
+                        <button onClick={() => handleDelete(p.id)}
                           className="px-2.5 py-1.5 text-xs bg-red-600 text-white hover:bg-red-700 transition-colors">
                           Sí, eliminar
                         </button>

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useStore } from '../context/StoreContext';
 import ProductCard from '../components/ProductCard';
 import * as catalogService from '../services/catalog.service';
-import { formatPrice, type Product } from '../data/products';
+import { formatPrice, FREE_SHIPPING_THRESHOLD, type Product } from '../data/products';
 import { ArrowLeft, Heart, Plus, Minus, Truck, Shield, RotateCcw, Check, ChevronRight } from '../components/Icons';
 
 export default function ProductDetail() {
@@ -188,7 +188,7 @@ export default function ProductDetail() {
             {/* Trust */}
             <div className="border border-gray-100 divide-y divide-gray-100">
               {[
-                { icon: <Truck size={15} />, text: 'Envío gratis en compras mayores a $80.000' },
+                { icon: <Truck size={15} />, text: `Envío gratis en compras mayores a ${formatPrice(FREE_SHIPPING_THRESHOLD)}` },
                 { icon: <Shield size={15} />, text: 'Compra segura con protección SSL' },
                 { icon: <RotateCcw size={15} />, text: 'Devoluciones gratuitas hasta 30 días' },
               ].map(({ icon, text }) => (

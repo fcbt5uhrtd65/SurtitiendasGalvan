@@ -1,26 +1,9 @@
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import ProductCard from '../components/ProductCard';
+import Countdown from '../components/Countdown';
 import { useStore } from '../context/StoreContext';
-import { formatPrice, FLASH_SALE_END, getCategoryCount } from '../data/products';
+import { formatPrice, FLASH_SALE_END, FREE_SHIPPING_THRESHOLD, getCategoryCount } from '../data/products';
 import { Layers, Truck, Shield, RotateCcw, Headphones } from '../components/Icons';
-
-function Countdown() {
-  const [s, setS] = useState(() => Math.max(0, Math.floor((FLASH_SALE_END - Date.now()) / 1000)));
-  useEffect(() => { const t = setInterval(() => setS(v => Math.max(0, v - 1)), 1000); return () => clearInterval(t); }, []);
-  const pad = (n: number) => String(n).padStart(2, '0');
-  const h = pad(Math.floor(s / 3600)), m = pad(Math.floor((s % 3600) / 60)), sec = pad(s % 60);
-  return (
-    <div className="flex items-center gap-1">
-      {[h, m, sec].map((v, i) => (
-        <span key={i} className="flex items-center gap-1">
-          <span className="bg-gray-900 text-white font-mono font-bold text-sm px-2 py-0.5 rounded-md min-w-[32px] text-center">{v}</span>
-          {i < 2 && <span className="text-gray-400 font-bold">:</span>}
-        </span>
-      ))}
-    </div>
-  );
-}
 
 export default function Home() {
   const navigate = useNavigate();
@@ -84,7 +67,7 @@ export default function Home() {
         {/* Trust bar */}
         <div className="border-b border-gray-100 grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100 py-4 my-0">
           {[
-            { icon: <Truck size={18} />, title: 'Envío gratis', desc: 'En compras mayores a $80.000' },
+            { icon: <Truck size={18} />, title: 'Envío gratis', desc: `En compras mayores a ${formatPrice(FREE_SHIPPING_THRESHOLD)}` },
             { icon: <Shield size={18} />, title: 'Compra segura', desc: 'Transacciones protegidas SSL' },
             { icon: <RotateCcw size={18} />, title: 'Devoluciones', desc: 'Hasta 30 días sin inconvenientes' },
             { icon: <Headphones size={18} />, title: 'Soporte', desc: 'Lun–Sáb 8 am–6 pm' },
@@ -169,7 +152,7 @@ export default function Home() {
                   <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>Ofertas del día</h2>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-400">Termina en</span>
-                    <Countdown />
+                    <Countdown endTime={FLASH_SALE_END} />
                   </div>
                 </div>
                 <button onClick={() => navigate('/categories')} className="text-xs text-[#C84B11] font-semibold hover:underline uppercase tracking-wide">Ver todas</button>

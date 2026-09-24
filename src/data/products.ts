@@ -33,5 +33,7 @@ export const getCategoryCount = (categoryId: string, list: Product[]) =>
 // Fixed end date for flash sale countdown (end of day Sep 30 2026)
 export const FLASH_SALE_END = new Date('2026-09-30T23:59:59').getTime();
 
+export const FREE_SHIPPING_THRESHOLD = 80000;
+
 export const formatPrice = (price: number) =>
   new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(price);

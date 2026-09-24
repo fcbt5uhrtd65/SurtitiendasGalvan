@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAdmin } from '../../context/AdminContext';
 import { ORDER_STATUS_LABELS, ORDER_STATUS_TRANSITIONS, ORDER_STATUS_VALUES, type OrderStatus } from '../../services/orders.service';
 import { formatPrice } from '../../data/products';
+import { ApiError } from '../../services/http';
 
 const ALL_STATUS = ORDER_STATUS_VALUES;
 const STATUS_LABELS = ORDER_STATUS_LABELS;
@@ -25,6 +26,7 @@ export default function AdminOrders() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<'desc' | 'asc'>('desc');
   const [confirmStatus, setConfirmStatus] = useState<{ id: string; status: OrderStatus } | null>(null);
+  const [actionError, setActionError] = useState('');
 
   const filtered = orders
     .filter(o => {
@@ -39,9 +41,13 @@ export default function AdminOrders() {
 
   const countFor = (s: OrderStatus | 'all') => s === 'all' ? orders.length : orders.filter(o => o.status === s).length;
 
-  const applyStatus = (id: string, status: OrderStatus) => {
-    updateOrderStatus(id, status);
+  const applyStatus = async (id: string, status: OrderStatus) => {
     setConfirmStatus(null);
+    try {
+      await updateOrderStatus(id, status);
+    } catch (error) {
+      setActionError(error instanceof ApiError ? error.message : 'No se pudo actualizar el estado del pedido. Inténtalo de nuevo.');
+    }
   };
 
   return (
@@ -61,6 +67,18 @@ export default function AdminOrders() {
           {sortDir === 'desc' ? 'Más recientes primero' : 'Más antiguos primero'}
         </button>
       </div>
+
+      {actionError && (
+        <div className="mb-4 flex items-start gap-2.5 text-xs text-red-600 bg-red-50 border border-red-100 px-3 py-2.5">
+          <svg className="flex-shrink-0 mt-0.5" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span className="flex-1">{actionError}</span>
+          <button onClick={() => setActionError('')} className="text-red-400 hover:text-red-600">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="bg-white border border-gray-200 p-4 flex flex-wrap gap-3 items-center mb-4">
@@ -157,7 +175,7 @@ export default function AdminOrders() {
 
                   <select
                     value={order.status}
-                    onChange={e => updateOrderStatus(order.id, e.target.value as OrderStatus)}
+                    onChange={e => applyStatus(order.id, e.target.value as OrderStatus)}
                     className="border border-gray-200 text-xs px-2 py-1.5 outline-none focus:border-gray-400 bg-white"
                   >
                     {validOptionsFor(order.status).map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
@@ -212,7 +230,7 @@ export default function AdminOrders() {
                         <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">Cambiar estado</p>
                         <div className="flex gap-1 flex-wrap">
                           {validOptionsFor(order.status).map(s => (
-                            <button key={s} onClick={() => updateOrderStatus(order.id, s)}
+                            <button key={s} onClick={() => applyStatus(order.id, s)}
                               className={`text-xs px-2.5 py-1.5 border font-medium transition-colors ${
                                 order.status === s
                                   ? `${STATUS_COLORS[s]} font-bold`

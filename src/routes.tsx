@@ -18,6 +18,7 @@ import Notifications from './pages/Notifications';
 import Help from './pages/Help';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ResetPassword from './pages/ResetPassword';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './pages/admin/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
@@ -50,6 +51,7 @@ export const router = createBrowserRouter([
       { path: 'help', Component: Help },
       { path: 'login', Component: Login },
       { path: 'register', Component: Register },
+      { path: 'reset-password', Component: ResetPassword },
     ],
   },
   { path: '/admin', Component: AdminLogin },

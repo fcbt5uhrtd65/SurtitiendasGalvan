@@ -1,21 +1,19 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useStore } from '../context/StoreContext';
-import { formatPrice } from '../data/products';
-import { COUPONS } from '../data/coupons';
+import { formatPrice, FREE_SHIPPING_THRESHOLD } from '../data/products';
+import { LOYALTY_MILESTONE_ORDER_NUMBER, LOYALTY_DISCOUNT_RATE, countValidPurchases } from '../services/orders.service';
 import ProductCard from '../components/ProductCard';
+import FreeShippingBar from '../components/FreeShippingBar';
+import LoyaltyBanner from '../components/LoyaltyBanner';
 import { Plus, Minus, Trash, ChevronRight } from '../components/Icons';
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { cart, products, removeFromCart, updateQty, cartTotal } = useStore();
-  const [coupon, setCoupon] = useState('');
-  const [couponApplied, setCouponApplied] = useState(false);
-  const [couponError, setCouponError] = useState('');
+  const { cart, products, orders, removeFromCart, updateQty, cartTotal } = useStore();
 
-  const shipping = cartTotal >= 80000 ? 0 : 9000;
-  const couponRate = couponApplied ? (COUPONS.find(c => c.code === coupon)?.discount ?? 0) : 0;
-  const discount = Math.round(cartTotal * couponRate);
+  const shipping = cartTotal >= FREE_SHIPPING_THRESHOLD ? 0 : 9000;
+  const isLoyaltyMilestone = countValidPurchases(orders) + 1 === LOYALTY_MILESTONE_ORDER_NUMBER;
+  const discount = isLoyaltyMilestone ? Math.round(cartTotal * LOYALTY_DISCOUNT_RATE) : 0;
   const total = cartTotal + shipping - discount;
   const suggested = products.filter(p => !cart.find(i => i.product.id === p.id)).slice(0, 4);
 
@@ -108,31 +106,8 @@ export default function Cart() {
 
         {/* Summary */}
         <div className="space-y-4">
-          {/* Coupon */}
-          <div className="border border-gray-200 p-5">
-            <p className="text-sm font-semibold text-gray-900 mb-3" style={{ fontFamily: 'Outfit, sans-serif' }}>Código de descuento</p>
-            <div className="flex gap-0">
-              <input
-                value={coupon}
-                onChange={e => setCoupon(e.target.value.toUpperCase())}
-                placeholder="GALVAN10"
-                disabled={couponApplied}
-                className="flex-1 border border-gray-200 border-r-0 px-3 py-2 text-sm outline-none focus:border-gray-400 disabled:bg-gray-50 disabled:text-gray-400"
-              />
-              <button
-                onClick={() => {
-                  if (COUPONS.some(c => c.code === coupon)) { setCouponApplied(true); setCouponError(''); }
-                  else { setCouponError('Cupón no válido. Prueba GALVAN10 o SURTE15'); }
-                }}
-                disabled={couponApplied || !coupon}
-                className="bg-gray-900 text-white text-xs font-semibold px-4 py-2 hover:bg-gray-700 transition-colors disabled:opacity-40 uppercase tracking-wide"
-              >
-                {couponApplied ? 'Aplicado' : 'Aplicar'}
-              </button>
-            </div>
-            {couponApplied && <p className="text-green-600 text-xs mt-2">Descuento del {Math.round(couponRate * 100)}% aplicado correctamente</p>}
-            {couponError && <p className="text-red-500 text-xs mt-2">{couponError}</p>}
-          </div>
+          <FreeShippingBar cartTotal={cartTotal} />
+          <LoyaltyBanner orders={orders} />
 
           {/* Totals */}
           <div className="border border-gray-200 p-5">
@@ -150,7 +125,7 @@ export default function Cart() {
               </div>
               {discount > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Descuento cupón</span>
+                  <span className="text-gray-500">Descuento fidelidad (10ª compra)</span>
                   <span className="text-green-600 font-medium">-{formatPrice(discount)}</span>
                 </div>
               )}
@@ -159,11 +134,6 @@ export default function Cart() {
                 <span className="font-bold text-gray-900 text-lg" style={{ fontFamily: 'Outfit, sans-serif' }}>{formatPrice(total)}</span>
               </div>
             </div>
-            {shipping > 0 && (
-              <p className="text-xs text-gray-400 mt-3">
-                Agrega {formatPrice(80000 - cartTotal)} más para obtener envío gratis
-              </p>
-            )}
             {/* Quick pay */}
             <button
               onClick={() => navigate('/checkout')}

@@ -135,3 +135,5 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_TASK_ALWAYS_EAGER', default=False)
 
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='pedidos@surtiweb.local')
+
+FRONTEND_URL = env('FRONTEND_URL', default='http://localhost:5173')
