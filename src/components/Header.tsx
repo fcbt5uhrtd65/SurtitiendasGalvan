@@ -4,18 +4,18 @@ import { useStore } from '../context/StoreContext';
 import Countdown from './Countdown';
 import { FLASH_SALE_END } from '../data/products';
 import {
-  Search, ShoppingCart, Heart, User, Menu, X, ChevronDown, Truck, Gift, Trophy, CreditCard,
+  Search, ShoppingCart, Heart, User, Menu, X, ChevronDown, Truck, Gift, Trophy, Shield, Settings,
   Package, LogOut, PencilRuler, Sparkles, Droplets, FlaskConical, BookOpen, Palette, Home as HomeIcon,
 } from './Icons';
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  papeleria: <PencilRuler size={14} />,
-  belleza: <Sparkles size={14} />,
-  capilar: <Droplets size={14} />,
-  facial: <FlaskConical size={14} />,
-  libros: <BookOpen size={14} />,
-  pinturas: <Palette size={14} />,
-  hogar: <HomeIcon size={14} />,
+  papeleria: <PencilRuler size={16} />,
+  belleza: <Sparkles size={16} />,
+  capilar: <Droplets size={16} />,
+  facial: <FlaskConical size={16} />,
+  libros: <BookOpen size={16} />,
+  pinturas: <Palette size={16} />,
+  hogar: <HomeIcon size={16} />,
 };
 
 export default function Header() {
@@ -60,30 +60,32 @@ export default function Header() {
   return (
     <>
       {/* Announcement bar */}
-      <div className="bg-slate-800 text-gray-200 text-xs">
+      <div className="bg-[#0B2D6B] text-white text-xs">
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-10 flex items-center justify-between gap-6">
-          <div className="hidden md:flex items-center divide-x divide-slate-600">
-            <div className="flex items-center gap-2 pr-4">
-              <span className="text-gray-400"><Truck size={14} /></span>
+          <div className="hidden md:flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-white/60"><Truck size={14} /></span>
               <span>Envíos a todo Colombia</span>
             </div>
-            <div className="flex items-center gap-2 px-4">
-              <span className="text-gray-400"><CreditCard size={14} /></span>
+            <div className="flex items-center gap-2">
+              <span className="text-white/60"><Shield size={14} /></span>
               <span>Compra 100% segura</span>
             </div>
-            <div className="flex items-center gap-2 pl-4">
-              <span className="text-gray-400"><Trophy size={14} /></span>
+            <div className="flex items-center gap-2">
+              <span className="text-white/60"><Trophy size={14} /></span>
               <span>Las mejores marcas, al mejor precio</span>
             </div>
           </div>
           <div className="md:hidden flex items-center gap-2">
-            <span className="text-gray-400"><Truck size={14} /></span>
+            <span className="text-white/60"><Truck size={14} /></span>
             <span>Envíos a todo Colombia</span>
           </div>
-          <div className="flex items-center divide-x divide-slate-600 flex-shrink-0">
-            <NavLink to="/help" className="px-3 first:pl-0 hover:text-white transition-colors">Ayuda</NavLink>
-            <span className="px-3 text-gray-400 hidden sm:inline">Nuestras tiendas</span>
-            <NavLink to="/help" className="px-3 hover:text-white transition-colors hidden sm:inline">Contacto</NavLink>
+          <div className="flex items-center flex-shrink-0">
+            <NavLink to="/help" className="px-3 first:pl-0 text-white/90 hover:text-white transition-colors">Ayuda</NavLink>
+            <span className="text-white/25">|</span>
+            <span className="px-3 text-white/90 hidden sm:inline">Nuestras tiendas</span>
+            <span className="text-white/25 hidden sm:inline">|</span>
+            <NavLink to="/help" className="px-3 text-white/90 hover:text-white transition-colors hidden sm:inline">Contacto</NavLink>
           </div>
         </div>
       </div>
@@ -91,12 +93,12 @@ export default function Header() {
       {/* Flash sale promo strip */}
       <NavLink
         to="/categories/ofertas"
-        className="block bg-[#C84B11] text-white hover:bg-[#a83a0d] transition-colors"
+        className="block bg-[#F4C20D] text-[#0B2D6B] hover:bg-[#e0b30c] transition-colors"
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-9 flex items-center justify-center gap-2.5 text-xs">
           <span className="flex-shrink-0"><Gift size={14} /></span>
-          <span className="font-semibold whitespace-nowrap">Ofertas por tiempo limitado</span>
-          <span className="hidden sm:inline text-white/80">· Termina en</span>
+          <span className="font-bold whitespace-nowrap">Ofertas por tiempo limitado</span>
+          <span className="hidden sm:inline text-[#0B2D6B]/70">· Termina en</span>
           <Countdown endTime={FLASH_SALE_END} className="hidden sm:flex scale-90" />
           <span className="font-bold underline underline-offset-2 whitespace-nowrap ml-1">Ver ofertas →</span>
         </div>
@@ -111,18 +113,18 @@ export default function Header() {
               onClick={() => navigate('/home')}
               className="order-1 flex-shrink-0 flex items-center gap-2.5"
             >
-              <div className="w-9 h-9 rounded-xl bg-[#C84B11] flex items-center justify-center text-white">
+              <div className="w-9 h-9 rounded-xl bg-[#1976E8] flex items-center justify-center text-white">
                 <HomeIcon size={18} />
               </div>
               <div className="hidden sm:block leading-none">
-                <div className="text-sm font-bold text-gray-900 tracking-tight" style={{ fontFamily: 'Outfit, sans-serif' }}>Surtitiendas Galván</div>
+                <div className="text-sm font-bold text-[#0B2D6B] tracking-tight" style={{ fontFamily: 'Outfit, sans-serif' }}>Surtitiendas Galván</div>
                 <div className="text-[10px] text-gray-400 tracking-widest uppercase font-medium">Todo para tu hogar</div>
               </div>
             </button>
 
             {/* Search */}
             <div className="order-3 md:order-2 w-full md:w-auto md:flex-1 max-w-2xl relative" ref={searchRef}>
-              <div className="flex items-center border border-gray-300 rounded-full focus-within:border-gray-900 transition-colors bg-white pr-1">
+              <div className="flex items-center border border-gray-300 rounded-full focus-within:border-[#1976E8] transition-colors bg-white pr-1">
                 <select
                   value=""
                   onChange={e => { if (e.target.value) navigate(`/categories/${e.target.value}`); }}
@@ -153,7 +155,7 @@ export default function Header() {
                 </div>
                 <button
                   onClick={submitSearch}
-                  className="flex-shrink-0 w-10 h-10 rounded-full bg-[#C84B11] hover:bg-[#a83a0d] transition-colors flex items-center justify-center text-white"
+                  className="flex-shrink-0 w-10 h-10 rounded-full bg-[#1976E8] hover:bg-[#125fc0] transition-colors flex items-center justify-center text-white"
                   aria-label="Buscar"
                 >
                   <Search size={16} />
@@ -205,10 +207,10 @@ export default function Header() {
               <div className="relative" ref={accountRef}>
                 <button
                   onClick={() => setAccountOpen(o => !o)}
-                  className="flex items-center gap-1.5 px-2.5 md:px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-600 hover:text-gray-900"
+                  className="flex items-center gap-1.5 px-2.5 md:px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-600 hover:text-[#0B2D6B]"
                 >
                   {currentUser ? (
-                    <div className="w-6 h-6 bg-gray-900 flex items-center justify-center text-white text-[10px] font-bold rounded-full flex-shrink-0">
+                    <div className="w-6 h-6 bg-[#0B2D6B] flex items-center justify-center text-white text-[10px] font-bold rounded-full flex-shrink-0">
                       {currentUser.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase()}
                     </div>
                   ) : (
@@ -240,7 +242,7 @@ export default function Header() {
                     ) : (
                       <>
                         <button onClick={() => { navigate('/login'); setAccountOpen(false); }}
-                          className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-[#C84B11] hover:bg-[#a83a0d] text-left">
+                          className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-[#1976E8] hover:bg-[#125fc0] text-left">
                           Iniciar sesión
                         </button>
                         <button onClick={() => { navigate('/register'); setAccountOpen(false); }}
@@ -253,17 +255,17 @@ export default function Header() {
                 )}
               </div>
 
-              <NavLink to="/favorites" className="relative flex flex-col items-center gap-0.5 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-600 hover:text-gray-900">
+              <NavLink to="/favorites" className="relative flex flex-col items-center gap-0.5 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-600 hover:text-[#0B2D6B]">
                 <Heart size={20} />
                 <span className="text-[10px] font-medium tracking-wide">Favoritos</span>
-                <span className="absolute top-1 right-1.5 bg-[#C84B11] text-white text-[9px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center leading-none">
+                <span className="absolute top-1 right-1.5 bg-[#F4C20D] text-[#0B2D6B] text-[9px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center leading-none">
                   {favorites.length}
                 </span>
               </NavLink>
-              <NavLink to="/cart" className="relative flex flex-col items-center gap-0.5 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-600 hover:text-gray-900">
+              <NavLink to="/cart" className="relative flex flex-col items-center gap-0.5 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-600 hover:text-[#0B2D6B]">
                 <ShoppingCart size={20} />
                 <span className="text-[10px] font-medium tracking-wide">Mi carrito</span>
-                <span className="absolute top-1 right-1.5 bg-[#C84B11] text-white text-[9px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center leading-none">
+                <span className="absolute top-1 right-1.5 bg-[#F4C20D] text-[#0B2D6B] text-[9px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center leading-none">
                   {cartCount}
                 </span>
               </NavLink>
@@ -271,16 +273,16 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Nav bar */}
-        <div className="border-t border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center gap-1 h-12 overflow-x-auto">
+        {/* Category nav bar */}
+        <div className="bg-[#1976E8]">
+          <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center gap-1.5 h-14 overflow-x-auto">
             {/* All categories */}
             <div
               className="relative flex-shrink-0"
               onMouseEnter={() => setMegaOpen(true)}
               onMouseLeave={() => setMegaOpen(false)}
             >
-              <button className="flex items-center gap-2 h-9 px-4 text-sm font-semibold text-white bg-[#C84B11] hover:bg-[#a83a0d] transition-colors whitespace-nowrap rounded-full">
+              <button className="flex items-center gap-2 h-9 px-4 text-sm font-semibold text-[#0B2D6B] bg-white hover:bg-gray-100 transition-colors whitespace-nowrap rounded-full">
                 <Menu size={15} />
                 Todas las categorías
                 <ChevronDown size={13} />
@@ -294,8 +296,8 @@ export default function Header() {
                       onClick={() => { navigate(`/categories/${cat.slug}`); setMegaOpen(false); }}
                       className="text-left group"
                     >
-                      <p className="flex items-center gap-2 text-sm font-semibold text-gray-900 group-hover:text-[#C84B11] transition-colors mb-1.5">
-                        <span className="text-gray-400 group-hover:text-[#C84B11] transition-colors">{categoryIcons[cat.slug]}</span>
+                      <p className="flex items-center gap-2 text-sm font-semibold text-gray-900 group-hover:text-[#1976E8] transition-colors mb-1.5">
+                        <span className="text-gray-400 group-hover:text-[#1976E8] transition-colors">{categoryIcons[cat.slug]}</span>
                         {cat.name}
                       </p>
                       <div className="space-y-1">
@@ -306,7 +308,7 @@ export default function Header() {
                     </button>
                   ))}
                   <button onClick={() => { navigate('/categories'); setMegaOpen(false); }}
-                    className="text-xs font-semibold text-[#C84B11] hover:underline text-left mt-2 col-span-4 border-t border-gray-100 pt-3">
+                    className="text-xs font-semibold text-[#1976E8] hover:underline text-left mt-2 col-span-4 border-t border-gray-100 pt-3">
                     Ver todas las categorías →
                   </button>
                 </div>
@@ -319,23 +321,23 @@ export default function Header() {
                 key={cat.id}
                 to={`/categories/${cat.slug}`}
                 className={({ isActive }) =>
-                  `h-9 flex items-center gap-1.5 px-3.5 text-sm rounded-full transition-colors whitespace-nowrap flex-shrink-0 ${
+                  `h-11 flex flex-col items-center justify-center gap-0.5 px-3.5 rounded-lg transition-colors whitespace-nowrap flex-shrink-0 ${
                     isActive
-                      ? 'text-[#C84B11] bg-orange-50 font-semibold'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                      ? 'bg-white/15 text-white'
+                      : 'text-white/85 hover:text-white hover:bg-white/10'
                   }`
                 }
               >
-                <span className="text-gray-400">{categoryIcons[cat.slug]}</span>
-                {cat.name}
+                {categoryIcons[cat.slug] ?? <Package size={16} />}
+                <span className="text-[11px] font-medium leading-none">{cat.name}</span>
               </NavLink>
             ))}
 
             <NavLink
               to="/categories/ofertas"
-              className="ml-auto flex-shrink-0 flex items-center gap-1.5 h-8 px-4 text-sm font-semibold text-[#C84B11] bg-orange-50 hover:bg-orange-100 rounded-full transition-colors whitespace-nowrap"
+              className="ml-auto flex-shrink-0 flex items-center gap-1.5 h-9 px-4 text-sm font-bold text-[#0B2D6B] bg-[#F4C20D] hover:bg-[#e0b30c] rounded-full transition-colors whitespace-nowrap"
             >
-              <Gift size={14} />
+              <Settings size={14} />
               Ofertas
             </NavLink>
           </div>

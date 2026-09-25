@@ -9,7 +9,7 @@ export default function Countdown({ endTime, className = '' }: { endTime: number
     <div className={`flex items-center gap-1 ${className}`}>
       {[h, m, sec].map((v, i) => (
         <span key={i} className="flex items-center gap-1">
-          <span className="bg-gray-900 text-white font-mono font-bold text-sm px-2 py-0.5 rounded-md min-w-[32px] text-center">{v}</span>
+          <span className="bg-[#0B2D6B] text-white font-mono font-bold text-sm px-2 py-0.5 rounded-md min-w-[32px] text-center">{v}</span>
           {i < 2 && <span className="text-gray-400 font-bold">:</span>}
         </span>
       ))}
