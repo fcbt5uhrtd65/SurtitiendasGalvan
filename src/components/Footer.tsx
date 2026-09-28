@@ -1,8 +1,19 @@
 import { useNavigate } from 'react-router';
 import { useStore } from '../context/StoreContext';
 
-const HELP_LINKS = ['Preguntas frecuentes', 'Envíos y entregas', 'Devoluciones', 'Política de privacidad', 'Términos y condiciones'];
-const COMPANY_LINKS = ['Nosotros', 'Trabaja con nosotros', 'Blog'];
+const HELP_LINKS = [
+  { label: 'Preguntas frecuentes', to: '/help#faq' },
+  { label: 'Envíos y entregas', to: '/help#envios' },
+  { label: 'Devoluciones', to: '/help#devoluciones' },
+  { label: 'Política de privacidad', to: '/help#privacidad' },
+  { label: 'Términos y condiciones', to: '/help#terminos' },
+];
+const COMPANY_LINKS = [
+  { label: 'Nosotros', to: '/nosotros#nosotros' },
+  { label: 'Trabaja con nosotros', to: '/nosotros#trabaja-con-nosotros' },
+  { label: 'Blog', to: '/nosotros#blog' },
+  { label: 'Contacto', to: '/nosotros#contacto' },
+];
 const SOCIALS = ['Facebook', 'Instagram', 'Twitter', 'YouTube'];
 
 export default function Footer() {
@@ -37,11 +48,10 @@ export default function Footer() {
           <h4 className="text-white font-semibold text-sm mb-4 tracking-wide" style={{ fontFamily: 'Outfit, sans-serif' }}>La empresa</h4>
           <ul className="space-y-2.5">
             {COMPANY_LINKS.map(l => (
-              <li key={l} className="text-sm text-white/40 cursor-default">{l}</li>
+              <li key={l.label}>
+                <button onClick={() => navigate(l.to)} className="text-sm hover:text-white transition-colors">{l.label}</button>
+              </li>
             ))}
-            <li>
-              <button onClick={() => navigate('/help')} className="text-sm hover:text-white transition-colors">Contacto</button>
-            </li>
           </ul>
         </div>
 
@@ -50,8 +60,8 @@ export default function Footer() {
           <h4 className="text-white font-semibold text-sm mb-4 tracking-wide" style={{ fontFamily: 'Outfit, sans-serif' }}>Ayuda</h4>
           <ul className="space-y-2.5">
             {HELP_LINKS.map(l => (
-              <li key={l}>
-                <button onClick={() => navigate('/help')} className="text-sm hover:text-white transition-colors">{l}</button>
+              <li key={l.label}>
+                <button onClick={() => navigate(l.to)} className="text-sm hover:text-white transition-colors">{l.label}</button>
               </li>
             ))}
           </ul>

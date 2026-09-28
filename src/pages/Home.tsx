@@ -8,6 +8,16 @@ import {
   Layers, Truck, Shield, RotateCcw, Headphones, Trophy, ChevronLeft, ChevronRight,
   Zap, Home as HomeIcon, Smartphone, ShoppingCart, Clock,
 } from '../components/Icons';
+import { MakeupIllustration, HomeIllustration, StationeryIllustration } from '../components/HeroIllustrations';
+
+// Ilustraciones propias (fondo transparente) para el carrusel del hero — en
+// vez de fotos reales del catálogo, que traían cada una su propio fondo/
+// colores y no se veían limpias sobre el hero navy.
+const HERO_SLIDES = [
+  { id: 'maquillaje', Illustration: MakeupIllustration },
+  { id: 'hogar', Illustration: HomeIllustration },
+  { id: 'papeleria', Illustration: StationeryIllustration },
+];
 
 // Bloque promocional fijo (no depende del catálogo en vivo, así siempre se ve
 // aunque el backend esté caído o la categoría no exista en el catálogo real).
@@ -37,14 +47,12 @@ const PROMO_CARDS = [
 export default function Home() {
   const navigate = useNavigate();
   const { products, categories, catalogLoading } = useStore();
-  const heroProducts = products.slice(0, 6);
   const [heroSlide, setHeroSlide] = useState(0);
 
   useEffect(() => {
-    if (heroProducts.length <= 1) return;
-    const id = setInterval(() => setHeroSlide(s => (s + 1) % heroProducts.length), 5000);
+    const id = setInterval(() => setHeroSlide(s => (s + 1) % HERO_SLIDES.length), 5000);
     return () => clearInterval(id);
-  }, [heroProducts.length]);
+  }, []);
 
   const featured   = products.slice(0, 8);
   const sales      = products.filter(p => p.isOnSale);
@@ -56,17 +64,17 @@ export default function Home() {
     return <div className="py-24 text-center text-sm text-gray-400">Cargando catálogo…</div>;
   }
 
-  const activeHeroProduct = heroProducts.length > 0 ? heroProducts[heroSlide % heroProducts.length] : null;
-  const goPrevHero = () => setHeroSlide(s => (s - 1 + heroProducts.length) % heroProducts.length);
-  const goNextHero = () => setHeroSlide(s => (s + 1) % heroProducts.length);
+  const ActiveHeroIllustration = HERO_SLIDES[heroSlide].Illustration;
+  const goPrevHero = () => setHeroSlide(s => (s - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  const goNextHero = () => setHeroSlide(s => (s + 1) % HERO_SLIDES.length);
 
   return (
     <div className="bg-white">
       <div className="max-w-7xl mx-auto px-6 pt-6">
         {/* Hero */}
         <div className="relative rounded-3xl overflow-hidden bg-[#0B2D6B] flex min-h-[280px] sm:min-h-[320px]">
-          <div className="relative flex-1 overflow-hidden flex items-center px-6 sm:px-10 py-7">
-            <div className="relative z-10 max-w-[300px] sm:max-w-[360px]">
+          <div className="relative flex-1 overflow-hidden flex items-center pl-14 pr-6 sm:pl-16 sm:pr-10 py-7">
+            <div className="relative z-10 max-w-[280px] sm:max-w-[340px]">
               <span className="inline-block bg-[#F4C20D] text-[#0B2D6B] text-xs font-bold px-3 py-1 rounded-full mb-3 tracking-wide">
                 DÍAS DE AHORRO
               </span>
@@ -86,40 +94,24 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Producto destacado — uno solo, sin tarjeta de fondo: se difumina
-                hacia los bordes para integrarse con el diagonal en vez de
-                verse como una foto recortada flotando encima. */}
-            {activeHeroProduct && (
-              <div className="hidden lg:flex absolute inset-y-0 left-[27%] w-[48%] items-center justify-center z-10">
-                <img
-                  key={activeHeroProduct.id}
-                  src={activeHeroProduct.image}
-                  alt={activeHeroProduct.name}
-                  className="w-[72%] h-[72%] object-contain animate-hero-fade"
-                  style={{
-                    maskImage: 'radial-gradient(ellipse 58% 58% at center, black 55%, transparent 88%)',
-                    WebkitMaskImage: 'radial-gradient(ellipse 58% 58% at center, black 55%, transparent 88%)',
-                  }}
-                />
+            {/* Producto destacado — ilustración propia (fondo transparente)
+                sobre un disco blanco, en vez de fotos de stock que traían
+                fondos y colores inconsistentes. El disco es "absolute" y la
+                ilustración no lo era, así que el disco pintaba encima y la
+                tapaba casi por completo — por eso se veía como una mancha
+                tenue. Ahora la ilustración va en su propia capa por encima. */}
+            <div className="hidden lg:flex absolute inset-y-0 left-[38%] w-[46%] items-center justify-center z-10">
+              <div key={HERO_SLIDES[heroSlide].id} className="relative w-64 h-64 animate-hero-fade">
+                <div className="absolute inset-6 rounded-full bg-white shadow-2xl" />
+                <div className="relative z-10 w-full h-full">
+                  <ActiveHeroIllustration />
+                </div>
               </div>
-            )}
-          </div>
-
-          {/* Right info panel */}
-          <div className="hidden lg:flex w-[280px] flex-shrink-0 flex-col justify-center items-start px-7 bg-[#EAF2FF]">
-            <h3 className="text-xl font-bold text-[#0B2D6B] leading-snug" style={{ fontFamily: 'Outfit, sans-serif' }}>
-              Las mejores<br />marcas para<br /><span className="text-[#1976E8]">tu hogar</span>
-            </h3>
-            <span className="w-10 h-1 bg-[#F4C20D] my-2.5 block rounded-full" />
-            <div className="bg-[#00B894] text-white rounded-2xl px-5 py-3.5 text-center mt-1">
-              <p className="text-xs font-semibold">Hasta</p>
-              <p className="text-3xl font-extrabold leading-none">50<span className="text-base align-top">%</span></p>
-              <p className="text-xs">De dto.</p>
             </div>
           </div>
 
-          {/* Carousel controls — funcionales: recorren heroProducts */}
-          {heroProducts.length > 1 && (
+          {/* Carousel controls — funcionales: recorren HERO_SLIDES */}
+          {HERO_SLIDES.length > 1 && (
             <>
               <button
                 type="button"
@@ -138,12 +130,12 @@ export default function Home() {
                 <ChevronRight size={16} />
               </button>
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
-                {heroProducts.map((p, i) => (
+                {HERO_SLIDES.map((slide, i) => (
                   <button
-                    key={p.id}
+                    key={slide.id}
                     type="button"
                     onClick={() => setHeroSlide(i)}
-                    aria-label={`Ver producto ${i + 1}`}
+                    aria-label={`Ver ilustración ${i + 1}`}
                     className={`h-1.5 rounded-full transition-all outline-none ${i === heroSlide ? 'w-5 bg-white' : 'w-1.5 bg-white/40 hover:bg-white/60'}`}
                   />
                 ))}

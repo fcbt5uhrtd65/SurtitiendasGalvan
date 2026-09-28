@@ -208,7 +208,7 @@ export default function Header() {
               {/* Account with dropdown */}
               <div className="relative" ref={accountRef}>
                 <button
-                  onClick={() => setAccountOpen(o => !o)}
+                  onClick={() => currentUser ? setAccountOpen(o => !o) : navigate('/login')}
                   className="flex items-center gap-1.5 px-2.5 md:px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-600 hover:text-[#0B2D6B]"
                 >
                   {currentUser ? (
@@ -221,38 +221,23 @@ export default function Header() {
                   <span className="hidden sm:inline text-sm font-medium max-w-[90px] truncate">
                     {currentUser ? `Hola, ${currentUser.name.split(' ')[0]}` : 'Mi cuenta'}
                   </span>
-                  <span className="hidden sm:inline"><ChevronDown size={13} /></span>
+                  {currentUser && <span className="hidden sm:inline"><ChevronDown size={13} /></span>}
                 </button>
 
-                {accountOpen && (
+                {accountOpen && currentUser && (
                   <div className="absolute top-full right-0 mt-1.5 bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden w-52 z-50">
-                    {currentUser ? (
-                      <>
-                        <button onClick={() => { navigate('/account'); setAccountOpen(false); }}
-                          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 text-left">
-                          <User size={15} /> Mi cuenta
-                        </button>
-                        <button onClick={() => { navigate('/orders'); setAccountOpen(false); }}
-                          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 text-left">
-                          <Package size={15} /> Mis pedidos
-                        </button>
-                        <button onClick={() => { logout(); setAccountOpen(false); navigate('/home'); }}
-                          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 text-left border-t border-gray-100">
-                          <LogOut size={15} /> Cerrar sesión
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button onClick={() => { navigate('/login'); setAccountOpen(false); }}
-                          className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-[#1976E8] hover:bg-[#125fc0] text-left">
-                          Iniciar sesión
-                        </button>
-                        <button onClick={() => { navigate('/register'); setAccountOpen(false); }}
-                          className="w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 text-left">
-                          Crear cuenta
-                        </button>
-                      </>
-                    )}
+                    <button onClick={() => { navigate('/account'); setAccountOpen(false); }}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 text-left">
+                      <User size={15} /> Mi cuenta
+                    </button>
+                    <button onClick={() => { navigate('/orders'); setAccountOpen(false); }}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 text-left">
+                      <Package size={15} /> Mis pedidos
+                    </button>
+                    <button onClick={() => { logout(); setAccountOpen(false); navigate('/home'); }}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 text-left border-t border-gray-100">
+                      <LogOut size={15} /> Cerrar sesión
+                    </button>
                   </div>
                 )}
               </div>

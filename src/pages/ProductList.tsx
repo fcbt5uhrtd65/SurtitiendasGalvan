@@ -14,13 +14,13 @@ const VISIBLE_CATEGORY_ROWS = 8;
 function FilterCard({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="border border-gray-200 rounded-lg bg-white">
+    <div className="border border-gray-100 rounded-2xl bg-white shadow-sm overflow-hidden">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-4 py-3.5"
+        className="w-full flex items-center justify-between gap-3 px-4 py-3.5 hover:bg-gray-50 transition-colors"
       >
-        <span className="flex items-center gap-2.5 text-sm font-bold text-gray-900">
-          <span className="text-gray-700">{icon}</span>
+        <span className="flex items-center gap-2.5 text-sm font-bold text-[#0B2D6B]">
+          <span className="w-7 h-7 rounded-lg bg-[#EAF2FF] text-[#1976E8] flex items-center justify-center flex-shrink-0">{icon}</span>
           {title}
         </span>
         <span className={`text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`}>
@@ -118,28 +118,28 @@ export default function ProductList() {
                   value={categorySearch}
                   onChange={e => setCategorySearch(e.target.value)}
                   placeholder="Buscar categorías…"
-                  className="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 border border-gray-100 rounded-md outline-none focus:border-gray-300"
+                  className="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 border border-gray-100 rounded-lg outline-none focus:border-[#1976E8] transition-colors"
                 />
               </div>
               <div className="space-y-1">
                 {visibleCategoryRows.map(row => (
                   <label
                     key={row.slug ?? 'all'}
-                    className={`flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer transition-colors ${
-                      row.active ? 'bg-orange-50' : 'hover:bg-gray-50'
+                    className={`flex items-center gap-2.5 px-2 py-1.5 rounded-lg cursor-pointer transition-colors ${
+                      row.active ? 'bg-[#EAF2FF]' : 'hover:bg-gray-50'
                     }`}
                   >
                     <input
                       type="checkbox"
                       checked={row.active}
                       onChange={() => navigate(row.slug ? `/categories/${row.slug}` : '/products')}
-                      className="w-4 h-4 accent-[#C84B11] rounded flex-shrink-0"
+                      className="w-4 h-4 accent-[#1976E8] rounded flex-shrink-0"
                     />
-                    <span className={`flex-1 min-w-0 truncate text-sm ${row.active ? 'text-[#C84B11] font-semibold' : 'text-gray-600'}`}>
+                    <span className={`flex-1 min-w-0 truncate text-sm ${row.active ? 'text-[#1976E8] font-semibold' : 'text-gray-600'}`}>
                       {row.label}
                     </span>
                     <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
-                      row.active ? 'bg-orange-100 text-[#C84B11]' : 'bg-gray-100 text-gray-500'
+                      row.active ? 'bg-white text-[#1976E8]' : 'bg-gray-100 text-gray-500'
                     }`}>
                       {row.count}
                     </span>
@@ -149,7 +149,7 @@ export default function ProductList() {
               {categoryRows.length > VISIBLE_CATEGORY_ROWS && (
                 <button
                   onClick={() => setShowAllCategories(v => !v)}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-[#C84B11] hover:underline mt-2"
+                  className="flex items-center gap-1.5 text-xs font-semibold text-[#1976E8] hover:underline mt-2"
                 >
                   {showAllCategories ? '− Ver menos categorías' : '+ Ver más categorías'}
                 </button>
@@ -160,12 +160,12 @@ export default function ProductList() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2.5 cursor-pointer group">
                   <input type="checkbox" checked={onSaleOnly} onChange={e => setOnSaleOnly(e.target.checked)}
-                    className="w-4 h-4 accent-[#C84B11] rounded" />
+                    className="w-4 h-4 accent-[#1976E8] rounded" />
                   <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">En descuento</span>
                 </label>
                 <label className="flex items-center gap-2.5 cursor-pointer group">
                   <input type="checkbox" checked={newOnly} onChange={e => setNewOnly(e.target.checked)}
-                    className="w-4 h-4 accent-[#C84B11] rounded" />
+                    className="w-4 h-4 accent-[#1976E8] rounded" />
                   <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">Nuevo ingreso</span>
                 </label>
               </div>
@@ -182,7 +182,7 @@ export default function ProductList() {
                 ] as const).map(opt => (
                   <label key={opt.key} className="flex items-center gap-2.5 cursor-pointer group">
                     <input type="radio" name="price" checked={priceFilter === opt.key}
-                      onChange={() => setPriceFilter(opt.key)} className="accent-[#C84B11]" />
+                      onChange={() => setPriceFilter(opt.key)} className="accent-[#1976E8]" />
                     <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">{opt.label}</span>
                   </label>
                 ))}
@@ -191,14 +191,14 @@ export default function ProductList() {
               {priceFilter === 'custom' && (
                 <div className="mt-4 pt-4 border-t border-gray-100">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="flex-1 flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-md px-2.5 py-1.5">
+                    <div className="flex-1 flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5">
                       <span className="text-xs text-gray-400">$</span>
                       <input type="number" min={0} max={customMax} value={customMin}
                         onChange={e => setCustomMin(Math.min(Number(e.target.value) || 0, customMax - 1000))}
                         className="w-full text-sm bg-transparent outline-none" />
                     </div>
                     <span className="text-gray-300">–</span>
-                    <div className="flex-1 flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-md px-2.5 py-1.5">
+                    <div className="flex-1 flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5">
                       <span className="text-xs text-gray-400">$</span>
                       <input type="number" min={customMin} max={PRICE_LIMIT} value={customMax}
                         onChange={e => setCustomMax(Math.max(Number(e.target.value) || 0, customMin + 1000))}
@@ -208,7 +208,7 @@ export default function ProductList() {
                   <div className="relative h-4">
                     <div className="absolute top-1/2 -translate-y-1/2 w-full h-1.5 bg-gray-200 rounded-full" />
                     <div
-                      className="absolute top-1/2 -translate-y-1/2 h-1.5 bg-[#C84B11] rounded-full"
+                      className="absolute top-1/2 -translate-y-1/2 h-1.5 bg-[#1976E8] rounded-full"
                       style={{
                         left: `${(customMin / PRICE_LIMIT) * 100}%`,
                         right: `${100 - (customMax / PRICE_LIMIT) * 100}%`,
@@ -236,7 +236,7 @@ export default function ProductList() {
             <button
               onClick={clearFilters}
               disabled={!hasActiveFilters}
-              className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-[#C84B11] bg-orange-50 hover:bg-orange-100 disabled:opacity-40 disabled:hover:bg-orange-50 rounded-lg py-3 transition-colors"
+              className="w-full flex items-center justify-center gap-2 text-sm font-bold text-[#1976E8] bg-[#EAF2FF] hover:bg-[#dbe9fd] disabled:opacity-40 disabled:hover:bg-[#EAF2FF] rounded-full py-3 transition-colors"
             >
               <RotateCcw size={14} /> Limpiar filtros
             </button>
@@ -271,7 +271,7 @@ export default function ProductList() {
           ) : (
             <div className="text-center py-32 text-gray-400">
               <p className="font-semibold text-gray-600 text-base mb-2">Sin resultados para estos filtros</p>
-              <button onClick={clearFilters} className="text-sm text-[#C84B11] hover:underline mt-2">Limpiar filtros</button>
+              <button onClick={clearFilters} className="text-sm text-[#1976E8] hover:underline mt-2">Limpiar filtros</button>
             </div>
           )}
         </div>

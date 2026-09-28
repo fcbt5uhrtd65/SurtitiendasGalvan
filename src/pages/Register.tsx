@@ -54,20 +54,20 @@ export default function Register() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-sm">
-        {/* Header */}
-        <div className="mb-8">
-          <button onClick={() => navigate('/home')} className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-700 transition-colors mb-6">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"/>
-            </svg>
-            Volver a la tienda
-          </button>
-          <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>Crear cuenta</h1>
-          <p className="text-sm text-gray-500 mt-1">Regístrate para comprar en Surtitiendas Galván</p>
-        </div>
+    <div className="w-full max-w-sm">
+      {/* Header */}
+      <div className="mb-8">
+        <button onClick={() => navigate('/home')} className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-700 transition-colors mb-6">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          Volver a la tienda
+        </button>
+        <h1 className="text-2xl font-bold text-[#0B2D6B]" style={{ fontFamily: 'Outfit, sans-serif' }}>Crear cuenta</h1>
+        <p className="text-sm text-gray-500 mt-1">Regístrate para comprar en Surtitiendas Galván</p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name */}
           <Field label="Nombre completo" error={fieldErrors.name}>
             <input
@@ -151,40 +151,40 @@ export default function Register() {
             </div>
           </Field>
 
-          {/* Email taken / network error */}
-          {(authError === 'email_taken' || networkError) && (
-            <div className="flex items-start gap-2.5 text-xs text-red-600 bg-red-50 border border-red-100 px-3 py-2.5">
-              <svg className="flex-shrink-0 mt-0.5" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
-              <span>
-                {authError === 'email_taken'
-                  ? <>Ya existe una cuenta con ese correo. <Link to="/login" className="underline font-semibold">Inicia sesión</Link></>
-                  : networkError}
-              </span>
-            </div>
-          )}
+        {/* Email taken / network error */}
+        {(authError === 'email_taken' || networkError) && (
+          <div className="flex items-start gap-2.5 text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2.5">
+            <svg className="flex-shrink-0 mt-0.5" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span>
+              {authError === 'email_taken'
+                ? <>Ya existe una cuenta con ese correo. <Link to="/login" className="underline font-semibold">Inicia sesión</Link></>
+                : networkError}
+            </span>
+          </div>
+        )}
 
-          <button
-            type="submit" disabled={loading}
-            className="w-full bg-[#1976E8] text-white font-bold rounded-full py-3 text-sm hover:bg-[#125fc0] transition-colors disabled:opacity-50 mt-2"
-          >
-            {loading ? 'Creando cuenta...' : 'Crear cuenta gratis'}
-          </button>
+        <button
+          type="submit" disabled={loading}
+          className="w-full bg-[#1976E8] text-white font-bold rounded-full py-3 text-sm hover:bg-[#125fc0] transition-colors disabled:opacity-50 mt-2"
+        >
+          {loading ? 'Creando cuenta...' : 'Crear cuenta gratis'}
+        </button>
 
-          <p className="text-[11px] text-gray-400 text-center">
-            Al registrarte aceptas nuestros{' '}
-            <span className="text-gray-600 underline cursor-pointer">términos y condiciones</span>
-          </p>
-        </form>
-
-        <p className="text-center text-sm text-gray-500 mt-6">
-          ¿Ya tienes cuenta?{' '}
-          <Link to="/login" className="text-[#1976E8] font-semibold hover:underline">
-            Inicia sesión
-          </Link>
+        <p className="text-[11px] text-gray-400 text-center">
+          Al registrarte aceptas nuestros{' '}
+          <Link to="/help#terminos" className="text-gray-600 underline">términos y condiciones</Link>
         </p>
-      </div>
+      </form>
+
+      <p className="text-center text-sm text-gray-500 mt-6">
+        ¿Ya tienes cuenta?{' '}
+        <Link to="/login" className="text-[#1976E8] font-semibold hover:underline">
+          Inicia sesión
+        </Link>
+      </p>
+    </div>
     </div>
   );
 }

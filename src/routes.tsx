@@ -16,6 +16,7 @@ import PaymentMethods from './pages/PaymentMethods';
 import Coupons from './pages/Coupons';
 import Notifications from './pages/Notifications';
 import Help from './pages/Help';
+import Company from './pages/Company';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
@@ -49,6 +50,7 @@ export const router = createBrowserRouter([
       { path: 'coupons', Component: Coupons },
       { path: 'notifications', Component: Notifications },
       { path: 'help', Component: Help },
+      { path: 'nosotros', Component: Company },
       { path: 'login', Component: Login },
       { path: 'register', Component: Register },
       { path: 'reset-password', Component: ResetPassword },
