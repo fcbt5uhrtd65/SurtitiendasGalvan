@@ -17,8 +17,25 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Algunos navegadores móviles pintan un flash blanco/gris translúcido sobre
+   botones y links de color al tocarlos (tap highlight por defecto). Lo
+   desactivamos para que el único feedback visual sea el que definimos
+   nosotros (hover/active/focus-visible). */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
+}
+
+/* Transición del producto destacado en el hero al rotar (arrows/dots). */
+@keyframes hero-fade {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-hero-fade {
+  animation: hero-fade 0.45s ease-out;
 }
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -56,5 +73,15 @@ h1, h2, h3, h4, h5, h6 {
   background: #C84B11;
   border: 2px solid #fff;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Carruseles horizontales de productos: se pueden arrastrar/deslizar,
+   pero ocultamos la barra nativa porque el control son las flechas. */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 

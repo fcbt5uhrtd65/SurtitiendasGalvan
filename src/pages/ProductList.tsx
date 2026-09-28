@@ -265,12 +265,8 @@ export default function ProductList() {
           </div>
 
           {sorted.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-px bg-gray-100">
-              {sorted.map(p => (
-                <div key={p.id} className="bg-white">
-                  <ProductCard product={p} />
-                </div>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
+              {sorted.map(p => <ProductCard key={p.id} product={p} />)}
             </div>
           ) : (
             <div className="text-center py-32 text-gray-400">

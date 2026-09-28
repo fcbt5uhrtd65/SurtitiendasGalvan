@@ -21,12 +21,8 @@ export default function Favorites() {
       </div>
 
       {favProducts.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-px bg-gray-100">
-          {favProducts.map(p => (
-            <div key={p.id} className="bg-white">
-              <ProductCard product={p} />
-            </div>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {favProducts.map(p => <ProductCard key={p.id} product={p} />)}
         </div>
       ) : (
         <div className="text-center py-28">

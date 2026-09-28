@@ -91,6 +91,13 @@ function adaptDetailProduct(dto: ProductDetailDTO): Product {
     description: dto.description,
     features: dto.features,
     stock: dto.stock,
+    variants: dto.variants.map(variant => ({
+      id: variant.id,
+      presentation: variant.presentation || variant.sku,
+      price: variant.price ? Number(variant.price.amount) : 0,
+      originalPrice: variant.is_on_sale && variant.original_price ? Number(variant.original_price) : undefined,
+      stock: variant.stock,
+    })),
   };
 }
 

@@ -1,3 +1,11 @@
+export interface ProductVariantOption {
+  id: string;
+  presentation: string;
+  price: number;
+  originalPrice?: number;
+  stock: number;
+}
+
 export interface Product {
   id: string;
   variantId: string;
@@ -16,6 +24,7 @@ export interface Product {
   description: string;
   features: string[];
   stock: number;
+  variants?: ProductVariantOption[];
 }
 
 export interface Category {

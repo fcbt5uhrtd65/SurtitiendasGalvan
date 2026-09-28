@@ -28,6 +28,7 @@ export default function Header() {
   const [searchFocused, setSearchFocused] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const accountRef = useRef<HTMLDivElement>(null);
+  const megaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setSuggestions(
@@ -44,6 +45,7 @@ export default function Header() {
     const handleClick = (e: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) setSuggestions([]);
       if (accountRef.current && !accountRef.current.contains(e.target as Node)) setAccountOpen(false);
+      if (megaRef.current && !megaRef.current.contains(e.target as Node)) setMegaOpen(false);
     };
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
@@ -279,17 +281,19 @@ export default function Header() {
             {/* All categories */}
             <div
               className="relative flex-shrink-0"
-              onMouseEnter={() => setMegaOpen(true)}
-              onMouseLeave={() => setMegaOpen(false)}
+              ref={megaRef}
             >
-              <button className="flex items-center gap-2 h-9 px-4 text-sm font-semibold text-[#0B2D6B] bg-white hover:bg-gray-100 transition-colors whitespace-nowrap rounded-full">
+              <button
+                onClick={() => setMegaOpen(o => !o)}
+                className="flex items-center gap-2 h-9 px-4 text-sm font-semibold text-[#0B2D6B] bg-white hover:bg-gray-100 active:bg-gray-200 transition-colors whitespace-nowrap rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[#0B2D6B]/30"
+              >
                 <Menu size={15} />
                 Todas las categorías
                 <ChevronDown size={13} />
               </button>
 
               {megaOpen && (
-                <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 shadow-xl z-50 w-[700px] p-6 grid grid-cols-4 gap-4 rounded-lg">
+                <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 shadow-xl z-50 w-[92vw] max-w-[700px] p-5 sm:p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 rounded-lg max-h-[70vh] overflow-y-auto">
                   {categories.map(cat => (
                     <button
                       key={cat.id}
@@ -308,7 +312,7 @@ export default function Header() {
                     </button>
                   ))}
                   <button onClick={() => { navigate('/categories'); setMegaOpen(false); }}
-                    className="text-xs font-semibold text-[#1976E8] hover:underline text-left mt-2 col-span-4 border-t border-gray-100 pt-3">
+                    className="text-xs font-semibold text-[#1976E8] hover:underline text-left mt-2 col-span-2 sm:col-span-3 md:col-span-4 border-t border-gray-100 pt-3">
                     Ver todas las categorías →
                   </button>
                 </div>
@@ -321,10 +325,10 @@ export default function Header() {
                 key={cat.id}
                 to={`/categories/${cat.slug}`}
                 className={({ isActive }) =>
-                  `h-11 flex flex-col items-center justify-center gap-0.5 px-3.5 rounded-lg transition-colors whitespace-nowrap flex-shrink-0 ${
+                  `h-11 flex flex-col items-center justify-center gap-0.5 px-2 rounded-lg transition-colors whitespace-nowrap flex-shrink-0 md:flex-1 md:min-w-[60px] outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${
                     isActive
                       ? 'bg-white/15 text-white'
-                      : 'text-white/85 hover:text-white hover:bg-white/10'
+                      : 'text-white/85 hover:text-white hover:bg-white/10 active:bg-white/20'
                   }`
                 }
               >
@@ -335,7 +339,7 @@ export default function Header() {
 
             <NavLink
               to="/categories/ofertas"
-              className="ml-auto flex-shrink-0 flex items-center gap-1.5 h-9 px-4 text-sm font-bold text-[#0B2D6B] bg-[#F4C20D] hover:bg-[#e0b30c] rounded-full transition-colors whitespace-nowrap"
+              className="ml-auto flex-shrink-0 flex items-center gap-1.5 h-9 px-4 text-sm font-bold text-[#0B2D6B] bg-[#F4C20D] hover:bg-[#e0b30c] active:bg-[#c99c0a] rounded-full transition-colors whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-white/50"
             >
               <Settings size={14} />
               Ofertas

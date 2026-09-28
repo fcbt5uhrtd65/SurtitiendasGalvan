@@ -23,7 +23,7 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen bg-gray-950 flex">
       {/* Left panel — brand */}
-      <div className="hidden lg:flex w-80 bg-[#C84B11] flex-col justify-between p-10 flex-shrink-0">
+      <div className="hidden lg:flex w-80 bg-[#0B2D6B] flex-col justify-between p-10 flex-shrink-0">
         <div>
           <div className="w-10 h-10 bg-white/20 flex items-center justify-center mb-8">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -60,7 +60,7 @@ export default function AdminLogin() {
               Volver a la tienda
             </Link>
             <div className="flex items-center gap-2 mb-1 lg:hidden">
-              <div className="w-6 h-6 bg-[#C84B11] flex items-center justify-center">
+              <div className="w-6 h-6 bg-[#1976E8] flex items-center justify-center">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
                 </svg>
@@ -77,7 +77,7 @@ export default function AdminLogin() {
               <input
                 type="email" value={user} onChange={e => setUser(e.target.value)}
                 placeholder="admin@surtiweb.com" autoComplete="username"
-                className="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 text-sm outline-none focus:border-[#C84B11] transition-colors placeholder-gray-600"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg text-white px-4 py-3 text-sm outline-none focus:border-[#1976E8] transition-colors placeholder-gray-600"
               />
             </div>
 
@@ -87,7 +87,7 @@ export default function AdminLogin() {
                 <input
                   type={showPass ? 'text' : 'password'} value={pass} onChange={e => setPass(e.target.value)}
                   placeholder="••••••••" autoComplete="current-password"
-                  className="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 text-sm outline-none focus:border-[#C84B11] transition-colors placeholder-gray-600 pr-10"
+                  className="w-full bg-gray-900 border border-gray-700 rounded-lg text-white px-4 py-3 text-sm outline-none focus:border-[#1976E8] transition-colors placeholder-gray-600 pr-10"
                 />
                 <button type="button" onClick={() => setShowPass(s => !s)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors">
@@ -110,23 +110,16 @@ export default function AdminLogin() {
 
             <button
               type="submit" disabled={!user || !pass || loading}
-              className="w-full bg-[#C84B11] text-white font-semibold py-3 text-sm hover:bg-[#a83a0d] transition-colors disabled:opacity-40 mt-2"
+              className="w-full bg-[#1976E8] text-white font-bold rounded-full py-3 text-sm hover:bg-[#125fc0] transition-colors disabled:opacity-40 mt-2"
             >
               {loading ? 'Verificando...' : 'Ingresar al panel'}
             </button>
           </form>
 
-          <div className="mt-6 bg-gray-900 border border-gray-800 px-4 py-3 text-xs text-gray-500 space-y-1">
+          <div className="mt-6 bg-gray-900 border border-gray-800 rounded-lg px-4 py-3 text-xs text-gray-500 space-y-1">
             <p className="font-semibold text-gray-400 mb-1">Acceso de administrador:</p>
             <p>Usa el correo y contraseña del superusuario que creaste con <code className="text-gray-300 font-mono">python manage.py createsuperuser</code>, o cualquier cuenta con rol ADMIN o VENDEDOR.</p>
           </div>
-
-          <p className="text-center text-xs text-gray-600 mt-6">
-            ¿Eres cliente?{' '}
-            <Link to="/login" className="text-gray-400 hover:text-gray-200 transition-colors underline">
-              Inicia sesión aquí
-            </Link>
-          </p>
         </div>
       </div>
     </div>

@@ -167,7 +167,7 @@ export default function Register() {
 
           <button
             type="submit" disabled={loading}
-            className="w-full bg-[#C84B11] text-white font-semibold py-3 text-sm hover:bg-[#a83a0d] transition-colors disabled:opacity-50 mt-2"
+            className="w-full bg-[#1976E8] text-white font-bold rounded-full py-3 text-sm hover:bg-[#125fc0] transition-colors disabled:opacity-50 mt-2"
           >
             {loading ? 'Creando cuenta...' : 'Crear cuenta gratis'}
           </button>
@@ -180,7 +180,7 @@ export default function Register() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           ¿Ya tienes cuenta?{' '}
-          <Link to="/login" className="text-[#C84B11] font-semibold hover:underline">
+          <Link to="/login" className="text-[#1976E8] font-semibold hover:underline">
             Inicia sesión
           </Link>
         </p>
@@ -190,8 +190,8 @@ export default function Register() {
 }
 
 function input(hasError: boolean) {
-  return `w-full border px-4 py-3 text-sm outline-none transition-colors placeholder-gray-300 ${
-    hasError ? 'border-red-300 focus:border-red-500 bg-red-50' : 'border-gray-200 focus:border-gray-700'
+  return `w-full border rounded-lg px-4 py-3 text-sm outline-none transition-colors placeholder-gray-300 ${
+    hasError ? 'border-red-300 focus:border-red-500 bg-red-50' : 'border-gray-200 focus:border-[#1976E8]'
   }`;
 }
 

@@ -97,12 +97,8 @@ export default function Search() {
             <strong className="text-gray-900">"{query}"</strong>
           </p>
           {results.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-px bg-gray-100">
-              {results.map(p => (
-                <div key={p.id} className="bg-white">
-                  <ProductCard product={p} />
-                </div>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {results.map(p => <ProductCard key={p.id} product={p} />)}
             </div>
           ) : (
             <div className="text-center py-24 text-gray-400">

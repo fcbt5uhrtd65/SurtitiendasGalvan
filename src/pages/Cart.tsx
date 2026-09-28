@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { useStore } from '../context/StoreContext';
 import { formatPrice, FREE_SHIPPING_THRESHOLD } from '../data/products';
 import { LOYALTY_MILESTONE_ORDER_NUMBER, LOYALTY_DISCOUNT_RATE, countValidPurchases } from '../services/orders.service';
-import ProductCard from '../components/ProductCard';
+import ProductCarousel from '../components/ProductCarousel';
 import FreeShippingBar from '../components/FreeShippingBar';
 import LoyaltyBanner from '../components/LoyaltyBanner';
 import { Plus, Minus, Trash, ChevronRight } from '../components/Icons';
@@ -26,7 +26,7 @@ export default function Cart() {
           </div>
           <h2 className="text-xl font-bold text-gray-900 mb-2" style={{ fontFamily: 'Outfit, sans-serif' }}>Carrito vacío</h2>
           <p className="text-sm text-gray-400 mb-6">Agrega productos para comenzar tu compra</p>
-          <button onClick={() => navigate('/home')} className="bg-[#C84B11] text-white font-semibold px-8 py-2.5 text-sm hover:bg-[#a83a0d] transition-colors">
+          <button onClick={() => navigate('/home')} className="bg-[#1976E8] text-white font-bold rounded-full px-8 py-2.5 text-sm hover:bg-[#125fc0] transition-colors">
             Explorar catálogo
           </button>
         </div>
@@ -52,56 +52,39 @@ export default function Cart() {
 
       <div className="grid lg:grid-cols-3 gap-10">
         {/* Items */}
-        <div className="lg:col-span-2">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200 text-xs text-gray-400 uppercase tracking-wider">
-                <th className="text-left pb-3 font-medium">Producto</th>
-                <th className="text-center pb-3 font-medium">Cantidad</th>
-                <th className="text-right pb-3 font-medium">Total</th>
-                <th className="pb-3 w-8"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {cart.map(({ product, quantity }) => (
-                <tr key={product.id}>
-                  <td className="py-5">
-                    <div className="flex gap-4 items-start">
-                      <img
-                        src={product.image} alt={product.name}
-                        onClick={() => navigate(`/product/${product.id}`)}
-                        className="w-20 h-20 object-cover bg-gray-50 border border-gray-100 cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0"
-                      />
-                      <div>
-                        <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5">{product.brand}</p>
-                        <p className="text-sm font-semibold text-gray-900 leading-snug">{product.name}</p>
-                        <p className="text-sm text-gray-500 mt-1">{formatPrice(product.price)} c/u</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-5">
-                    <div className="flex items-center justify-center border border-gray-200 w-fit mx-auto">
-                      <button onClick={() => updateQty(product.id, quantity - 1)} className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-50 border-r border-gray-200 transition-colors">
-                        <Minus size={12} />
-                      </button>
-                      <span className="w-10 text-center text-sm font-semibold">{quantity}</span>
-                      <button onClick={() => updateQty(product.id, quantity + 1)} className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-50 border-l border-gray-200 transition-colors">
-                        <Plus size={12} />
-                      </button>
-                    </div>
-                  </td>
-                  <td className="py-5 text-right">
-                    <p className="font-bold text-gray-900 text-sm">{formatPrice(product.price * quantity)}</p>
-                  </td>
-                  <td className="py-5 pl-4">
-                    <button onClick={() => removeFromCart(product.id)} className="text-gray-300 hover:text-red-400 transition-colors">
-                      <Trash size={15} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="lg:col-span-2 divide-y divide-gray-100 border-t border-b border-gray-100 sm:border-none">
+          {cart.map(({ product, quantity }) => (
+            <div key={product.id} className="py-5 flex flex-col sm:flex-row sm:items-center gap-4">
+              <div className="flex gap-4 items-start flex-1 min-w-0">
+                <img
+                  src={product.image} alt={product.name}
+                  onClick={() => navigate(`/product/${product.id}`)}
+                  className="w-20 h-20 rounded-lg object-cover bg-gray-50 border border-gray-100 cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0"
+                />
+                <div className="min-w-0">
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5">{product.brand}</p>
+                  <p className="text-sm font-semibold text-gray-900 leading-snug">{product.name}</p>
+                  <p className="text-sm text-gray-500 mt-1">{formatPrice(product.price)} c/u</p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6">
+                <div className="flex items-center justify-center border border-gray-200 rounded-lg w-fit flex-shrink-0">
+                  <button onClick={() => updateQty(product.id, quantity - 1)} className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-50 border-r border-gray-200 transition-colors">
+                    <Minus size={12} />
+                  </button>
+                  <span className="w-10 text-center text-sm font-semibold">{quantity}</span>
+                  <button onClick={() => updateQty(product.id, quantity + 1)} className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-50 border-l border-gray-200 transition-colors">
+                    <Plus size={12} />
+                  </button>
+                </div>
+                <p className="font-bold text-gray-900 text-sm sm:w-24 sm:text-right flex-shrink-0">{formatPrice(product.price * quantity)}</p>
+                <button onClick={() => removeFromCart(product.id)} className="text-gray-300 hover:text-red-400 transition-colors flex-shrink-0">
+                  <Trash size={16} />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Summary */}
@@ -164,13 +147,7 @@ export default function Cart() {
           <h2 className="text-lg font-bold text-gray-900 mb-6" style={{ fontFamily: 'Outfit, sans-serif' }}>
             También te puede interesar
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-gray-100">
-            {suggested.map(p => (
-              <div key={p.id} className="bg-white">
-                <ProductCard product={p} />
-              </div>
-            ))}
-          </div>
+          <ProductCarousel products={suggested} />
         </section>
       )}
     </div>

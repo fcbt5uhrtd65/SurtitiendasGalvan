@@ -67,7 +67,7 @@ export default function Login() {
                 <input
                   type="email" value={forgotEmail} onChange={e => setForgotEmail(e.target.value)}
                   placeholder="tu@correo.com" autoComplete="email" required
-                  className="w-full border border-gray-200 px-4 py-3 text-sm outline-none focus:border-gray-700 transition-colors placeholder-gray-300"
+                  className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-[#1976E8] transition-colors placeholder-gray-300"
                 />
               </div>
 
@@ -82,7 +82,7 @@ export default function Login() {
 
               <button
                 type="submit" disabled={!forgotEmail || forgotLoading}
-                className="w-full bg-[#C84B11] text-white font-semibold py-3 text-sm hover:bg-[#a83a0d] transition-colors disabled:opacity-50 mt-2"
+                className="w-full bg-[#1976E8] text-white font-bold rounded-full py-3 text-sm hover:bg-[#125fc0] transition-colors disabled:opacity-50 mt-2"
               >
                 {forgotLoading ? 'Enviando...' : 'Enviar enlace'}
               </button>
@@ -134,7 +134,7 @@ export default function Login() {
               type="email" value={email} onChange={e => setEmail(e.target.value)}
               placeholder="tu@correo.com"
               autoComplete="email" required
-              className="w-full border border-gray-200 px-4 py-3 text-sm outline-none focus:border-gray-700 transition-colors placeholder-gray-300"
+              className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-[#1976E8] transition-colors placeholder-gray-300"
             />
           </div>
 
@@ -142,14 +142,14 @@ export default function Login() {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="text-xs font-semibold text-gray-600 uppercase tracking-widest">Contraseña</label>
-              <button type="button" onClick={() => setForgotMode(true)} className="text-[11px] text-[#C84B11] hover:underline">¿Olvidaste tu contraseña?</button>
+              <button type="button" onClick={() => setForgotMode(true)} className="text-[11px] text-[#1976E8] hover:underline">¿Olvidaste tu contraseña?</button>
             </div>
             <div className="relative">
               <input
                 type={showPass ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
                 autoComplete="current-password" required
-                className="w-full border border-gray-200 px-4 py-3 text-sm outline-none focus:border-gray-700 transition-colors placeholder-gray-300 pr-10"
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-[#1976E8] transition-colors placeholder-gray-300 pr-10"
               />
               <button
                 type="button" onClick={() => setShowPass(s => !s)}
@@ -175,7 +175,7 @@ export default function Login() {
 
           <button
             type="submit" disabled={!email || !password || loading}
-            className="w-full bg-[#C84B11] text-white font-semibold py-3 text-sm hover:bg-[#a83a0d] transition-colors disabled:opacity-50 mt-2"
+            className="w-full bg-[#1976E8] text-white font-bold rounded-full py-3 text-sm hover:bg-[#125fc0] transition-colors disabled:opacity-50 mt-2"
           >
             {loading ? 'Verificando...' : 'Ingresar'}
           </button>
@@ -184,20 +184,10 @@ export default function Login() {
         {/* Register link */}
         <p className="text-center text-sm text-gray-500 mt-6">
           ¿No tienes cuenta?{' '}
-          <Link to="/register" className="text-[#C84B11] font-semibold hover:underline">
+          <Link to="/register" className="text-[#1976E8] font-semibold hover:underline">
             Regístrate gratis
           </Link>
         </p>
-
-        {/* Admin separator */}
-        <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-          <Link to="/admin" className="text-xs text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center gap-1.5">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-            Acceso panel administrador
-          </Link>
-        </div>
       </div>
     </div>
   );
