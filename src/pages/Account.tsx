@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router';
 import { useStore } from '../context/StoreContext';
 import { LOYALTY_MILESTONE_ORDER_NUMBER, countValidPurchases } from '../services/orders.service';
-import { Package, Heart, MapPin, CreditCard, Gift, Bell, HelpCircle, LogOut, ChevronRight, User } from '../components/Icons';
+import { Package, Heart, MapPin, CreditCard, Gift, Bell, HelpCircle, LogOut, ChevronRight, User, Shield } from '../components/Icons';
+
+const STAFF_ROLES = new Set(['ADMIN', 'VENDEDOR']);
 
 export default function Account() {
   const navigate = useNavigate();
@@ -66,7 +68,27 @@ export default function Account() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
-      <h1 className="text-2xl font-bold text-gray-900 mb-8" style={{ fontFamily: 'Outfit, sans-serif' }}>Mi cuenta</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6" style={{ fontFamily: 'Outfit, sans-serif' }}>Mi cuenta</h1>
+
+      {STAFF_ROLES.has(currentUser.role) && (
+        <button
+          onClick={() => navigate('/admin')}
+          className="w-full mb-6 flex items-center justify-between gap-4 rounded-2xl border border-[#1976E8]/30 bg-[#EAF2FF] px-5 py-4 hover:bg-[#dbe9fd] transition-colors text-left"
+        >
+          <div className="flex items-center gap-3.5 min-w-0">
+            <span className="w-10 h-10 rounded-xl bg-[#0B2D6B] flex items-center justify-center text-white flex-shrink-0">
+              <Shield size={18} />
+            </span>
+            <div className="min-w-0">
+              <p className="text-sm font-bold text-[#0B2D6B]">Esta cuenta tiene acceso de administrador</p>
+              <p className="text-xs text-gray-500">Gestiona productos, pedidos y clientes desde el panel</p>
+            </div>
+          </div>
+          <span className="text-[#1976E8] font-bold text-sm flex items-center gap-1 flex-shrink-0">
+            Ir al panel <ChevronRight size={14} />
+          </span>
+        </button>
+      )}
 
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Profile card */}
