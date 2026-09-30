@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAdmin } from '../../context/AdminContext';
 import { formatPrice } from '../../data/products';
@@ -17,7 +16,7 @@ const STATUS_COLORS: Record<OrderStatus, string> = {
   ENTREGADO: 'bg-green-100 text-green-700 border-green-200',
   CANCELADO: 'bg-red-100 text-red-600 border-red-200',
 };
-const PIE_COLORS = ['#3b82f6', '#6366f1', '#f59e0b', '#8b5cf6', '#22c55e', '#ef4444'];
+const PIE_COLORS = ['#1976E8', '#0B2D6B', '#F4C20D', '#00B894', '#8b5cf6', '#ef4444'];
 
 // Last 7 days labels
 function last7Days() {
@@ -34,7 +33,6 @@ function last7Days() {
 export default function Dashboard() {
   const navigate = useNavigate();
   const { orders, customers, products } = useAdmin();
-  const [chartRange] = useState<'week' | 'month'>('week');
 
   const today = new Date().toISOString().slice(0, 10);
   const days = last7Days();
@@ -104,17 +102,17 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>Dashboard</h1>
+          <h1 className="text-xl font-bold text-[#0B2D6B]" style={{ fontFamily: 'Outfit, sans-serif' }}>Dashboard</h1>
           <p className="text-sm text-gray-500 mt-0.5">Resumen de actividad de la tienda</p>
         </div>
-        <span className="text-xs text-gray-400 bg-white border border-gray-200 px-3 py-1.5">{today}</span>
+        <span className="text-xs text-gray-400 bg-white border border-gray-200 rounded-lg px-3 py-1.5">{today}</span>
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         {metrics.map(m => (
-          <div key={m.label} className="bg-white border border-gray-200 p-4 hover:border-gray-300 transition-colors">
-            <div className={`w-9 h-9 flex items-center justify-center mb-3 ${m.color}`}>
+          <div key={m.label} className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4 hover:border-gray-200 transition-colors">
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${m.color}`}>
               {m.icon}
             </div>
             <p className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>{m.value}</p>
@@ -128,7 +126,7 @@ export default function Dashboard() {
       {(pendingOrders.length > 0 || lowStockProducts.length > 0) && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {pendingOrders.length > 0 && (
-            <div className="bg-amber-50 border border-amber-200 p-4">
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -150,7 +148,7 @@ export default function Dashboard() {
             </div>
           )}
           {lowStockProducts.length > 0 && (
-            <div className="bg-red-50 border border-red-200 p-4">
+            <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -176,7 +174,7 @@ export default function Dashboard() {
       {/* Charts row */}
       <div className="grid lg:grid-cols-3 gap-4">
         {/* Revenue line chart */}
-        <div className="bg-white border border-gray-200 p-5 lg:col-span-2">
+        <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-5 lg:col-span-2">
           <div className="flex items-center justify-between mb-5">
             <div>
               <h2 className="text-sm font-bold text-gray-800">Ventas — últimos 7 días</h2>
@@ -193,18 +191,18 @@ export default function Dashboard() {
                 tickFormatter={v => v === 0 ? '$0' : `$${(v / 1000).toFixed(0)}k`} width={36} />
               <Tooltip
                 formatter={(v) => [formatPrice(Number(v)), 'Ventas']}
-                contentStyle={{ border: '1px solid #e5e7eb', borderRadius: 0, fontSize: 12, boxShadow: 'none' }}
+                contentStyle={{ border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 12, boxShadow: 'none' }}
                 labelStyle={{ fontWeight: 700, color: '#111' }}
               />
-              <Line type="monotone" dataKey="ventas" stroke="#C84B11" strokeWidth={2}
-                dot={{ fill: '#C84B11', r: 3, strokeWidth: 0 }}
-                activeDot={{ r: 5, fill: '#C84B11', strokeWidth: 0 }} />
+              <Line type="monotone" dataKey="ventas" stroke="#1976E8" strokeWidth={2}
+                dot={{ fill: '#1976E8', r: 3, strokeWidth: 0 }}
+                activeDot={{ r: 5, fill: '#1976E8', strokeWidth: 0 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
         {/* Order status pie */}
-        <div className="bg-white border border-gray-200 p-5">
+        <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-5">
           <h2 className="text-sm font-bold text-gray-800 mb-1">Estado de pedidos</h2>
           <p className="text-[11px] text-gray-400 mb-3">{orders.length} pedidos en total</p>
           {statusCounts.length > 0 ? (
@@ -214,7 +212,7 @@ export default function Dashboard() {
                   {statusCounts.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
                 </Pie>
                 <Tooltip formatter={(v) => [Number(v), 'pedidos']}
-                  contentStyle={{ border: '1px solid #e5e7eb', borderRadius: 0, fontSize: 11, boxShadow: 'none' }} />
+                  contentStyle={{ border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 11, boxShadow: 'none' }} />
                 <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
               </PieChart>
             </ResponsiveContainer>
@@ -227,7 +225,7 @@ export default function Dashboard() {
       {/* Bottom row: top products + recent orders */}
       <div className="grid lg:grid-cols-5 gap-4">
         {/* Top products */}
-        <div className="bg-white border border-gray-200 p-5 lg:col-span-2">
+        <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-5 lg:col-span-2">
           <h2 className="text-sm font-bold text-gray-800 mb-4">Productos más vendidos</h2>
           {topProducts.length > 0 ? (
             <div className="space-y-3">
@@ -248,10 +246,10 @@ export default function Dashboard() {
         </div>
 
         {/* Recent orders */}
-        <div className="bg-white border border-gray-200 lg:col-span-3">
+        <div className="bg-white border border-gray-100 rounded-2xl shadow-sm lg:col-span-3 overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="text-sm font-bold text-gray-800">Pedidos recientes</h2>
-            <button onClick={() => navigate('/admin/orders')} className="text-xs text-[#C84B11] font-semibold hover:underline">Ver todos →</button>
+            <button onClick={() => navigate('/admin/orders')} className="text-xs text-[#1976E8] font-semibold hover:underline">Ver todos →</button>
           </div>
           <div className="divide-y divide-gray-50">
             {[...orders].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5).map(o => (
@@ -260,7 +258,7 @@ export default function Dashboard() {
                   <p className="text-xs font-semibold text-gray-800">{o.customerName}</p>
                   <p className="text-[11px] text-gray-400 font-mono">{o.id} · {o.date}</p>
                 </div>
-                <span className={`text-[10px] font-bold px-2 py-0.5 border ${STATUS_COLORS[o.status]}`}>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${STATUS_COLORS[o.status]}`}>
                   {STATUS_LABELS[o.status]}
                 </span>
                 <p className="text-xs font-bold text-gray-900 flex-shrink-0">{formatPrice(o.total)}</p>

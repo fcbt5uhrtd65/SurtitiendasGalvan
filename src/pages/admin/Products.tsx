@@ -106,11 +106,11 @@ export default function AdminProducts() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>Productos</h1>
+          <h1 className="text-xl font-bold text-[#0B2D6B]" style={{ fontFamily: 'Outfit, sans-serif' }}>Productos</h1>
           <p className="text-sm text-gray-500 mt-0.5">{products.length} en catálogo · {stockCounts.out} sin stock</p>
         </div>
         <button onClick={openAdd}
-          className="bg-[#C84B11] text-white text-sm font-semibold px-4 py-2 hover:bg-[#a83a0d] transition-colors flex items-center gap-2">
+          className="bg-[#1976E8] text-white text-sm font-bold rounded-full px-4 py-2.5 hover:bg-[#125fc0] transition-colors flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
@@ -119,7 +119,7 @@ export default function AdminProducts() {
       </div>
 
       {actionError && (
-        <div className="mb-4 flex items-start gap-2.5 text-xs text-red-600 bg-red-50 border border-red-100 px-3 py-2.5">
+        <div className="mb-4 flex items-start gap-2.5 text-xs text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2.5">
           <svg className="flex-shrink-0 mt-0.5" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
@@ -131,26 +131,26 @@ export default function AdminProducts() {
       )}
 
       {/* Filters bar */}
-      <div className="bg-white border border-gray-200 p-4 flex flex-wrap items-center gap-3 mb-4">
+      <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4 flex flex-wrap items-center gap-3 mb-4">
         {/* Search */}
         <div className="relative flex-1 min-w-48">
           <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por nombre o marca…"
-            className="w-full pl-9 pr-4 py-2 border border-gray-200 text-sm outline-none focus:border-gray-400" />
+            className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-[#1976E8] transition-colors" />
         </div>
 
         {/* Category */}
         <select value={catFilter} onChange={e => setCatFilter(e.target.value)}
-          className="border border-gray-200 text-sm px-3 py-2 outline-none focus:border-gray-400 bg-white">
+          className="border border-gray-200 rounded-lg text-sm px-3 py-2 outline-none focus:border-[#1976E8] bg-white">
           <option value="all">Todas las categorías</option>
           {catOptions.map(c => <option key={c.id} value={c.slug}>{c.name}</option>)}
         </select>
 
         {/* Sort */}
         <select value={sort} onChange={e => setSort(e.target.value as SortKey)}
-          className="border border-gray-200 text-sm px-3 py-2 outline-none focus:border-gray-400 bg-white">
+          className="border border-gray-200 rounded-lg text-sm px-3 py-2 outline-none focus:border-[#1976E8] bg-white">
           <option value="name">Nombre A-Z</option>
           <option value="price-asc">Precio ↑</option>
           <option value="price-desc">Precio ↓</option>
@@ -159,15 +159,15 @@ export default function AdminProducts() {
         </select>
 
         {/* Stock filter pills */}
-        <div className="flex gap-1 ml-auto">
+        <div className="flex gap-1.5 ml-auto">
           {([
-            { k: 'all' as StockFilter, label: `Todos (${stockCounts.all})`, cls: 'bg-gray-900 text-white' },
+            { k: 'all' as StockFilter, label: `Todos (${stockCounts.all})`, cls: 'bg-[#0B2D6B] text-white' },
             { k: 'ok' as StockFilter, label: `En stock (${stockCounts.ok})`, cls: 'bg-emerald-600 text-white' },
             { k: 'low' as StockFilter, label: `Stock bajo (${stockCounts.low})`, cls: 'bg-amber-500 text-white' },
             { k: 'out' as StockFilter, label: `Sin stock (${stockCounts.out})`, cls: 'bg-red-600 text-white' },
           ]).map(({ k, label, cls }) => (
             <button key={k} onClick={() => setStockFilter(k)}
-              className={`text-xs px-2.5 py-1.5 font-medium transition-colors ${
+              className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${
                 stockFilter === k ? cls : 'border border-gray-200 text-gray-500 hover:border-gray-400'
               }`}>
               {label}
@@ -177,7 +177,7 @@ export default function AdminProducts() {
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-gray-200">
+      <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50">
@@ -191,7 +191,7 @@ export default function AdminProducts() {
               <tr key={p.id} className={`hover:bg-gray-50 transition-colors ${p.stock === 0 ? 'opacity-60' : ''}`}>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 overflow-hidden flex-shrink-0 border border-gray-100">
+                    <div className="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0 border border-gray-100">
                       <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                     </div>
                     <div>
@@ -210,7 +210,7 @@ export default function AdminProducts() {
                     <div className="flex items-center gap-1">
                       <input type="number" value={stockVal} onChange={e => setStockVal(e.target.value)}
                         onKeyDown={e => { if (e.key === 'Enter') saveStock(p.id); if (e.key === 'Escape') setEditingStock(null); }}
-                        className="w-16 border border-gray-300 text-sm px-2 py-1 outline-none focus:border-[#C84B11]"
+                        className="w-16 border border-gray-300 rounded-lg text-sm px-2 py-1 outline-none focus:border-[#1976E8]"
                         autoFocus />
                       <button onClick={() => saveStock(p.id)} className="text-green-600 hover:text-green-800">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -236,32 +236,32 @@ export default function AdminProducts() {
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-1">
-                    {p.isNew && <span className="text-[10px] font-bold text-blue-600 bg-blue-50 border border-blue-100 px-1.5 py-0.5">NUEVO</span>}
-                    {p.isBestSeller && <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-100 px-1.5 py-0.5">TOP</span>}
-                    {p.isOnSale && <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-100 px-1.5 py-0.5">OFERTA</span>}
+                    {p.isNew && <span className="text-[10px] font-bold text-blue-600 bg-blue-50 border border-blue-100 rounded-full px-2 py-0.5">NUEVO</span>}
+                    {p.isBestSeller && <span className="text-[10px] font-bold text-[#0B2D6B] bg-[#EAF2FF] border border-blue-100 rounded-full px-2 py-0.5">TOP</span>}
+                    {p.isOnSale && <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-100 rounded-full px-2 py-0.5">OFERTA</span>}
                     {!p.isNew && !p.isBestSeller && !p.isOnSale && <span className="text-[10px] text-gray-300">—</span>}
                   </div>
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex gap-1">
                     <button onClick={() => openEdit(p)}
-                      className="px-2.5 py-1.5 text-xs border border-gray-200 text-gray-600 hover:border-gray-400 hover:bg-gray-50 transition-colors">
+                      className="px-2.5 py-1.5 rounded-lg text-xs border border-gray-200 text-gray-600 hover:border-[#1976E8] hover:text-[#1976E8] hover:bg-[#EAF2FF] transition-colors">
                       Editar
                     </button>
                     {deleteConfirm === p.id ? (
                       <>
                         <button onClick={() => handleDelete(p.id)}
-                          className="px-2.5 py-1.5 text-xs bg-red-600 text-white hover:bg-red-700 transition-colors">
+                          className="px-2.5 py-1.5 rounded-lg text-xs bg-red-600 text-white hover:bg-red-700 transition-colors">
                           Sí, eliminar
                         </button>
                         <button onClick={() => setDeleteConfirm(null)}
-                          className="px-2.5 py-1.5 text-xs border border-gray-200 text-gray-500 transition-colors">
+                          className="px-2.5 py-1.5 rounded-lg text-xs border border-gray-200 text-gray-500 transition-colors">
                           No
                         </button>
                       </>
                     ) : (
                       <button onClick={() => setDeleteConfirm(p.id)}
-                        className="px-2.5 py-1.5 text-xs border border-gray-200 text-gray-400 hover:border-red-300 hover:text-red-500 transition-colors">
+                        className="px-2.5 py-1.5 rounded-lg text-xs border border-gray-200 text-gray-400 hover:border-red-300 hover:text-red-500 transition-colors">
                         ✕
                       </button>
                     )}
@@ -288,10 +288,10 @@ export default function AdminProducts() {
       {/* Modal */}
       {modal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setModal(null)}>
-          <div className="bg-white w-full max-w-2xl max-h-[92vh] overflow-y-auto shadow-2xl" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white z-10">
+          <div className="bg-white w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white z-10 rounded-t-2xl">
               <div>
-                <h2 className="font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                <h2 className="font-bold text-[#0B2D6B]" style={{ fontFamily: 'Outfit, sans-serif' }}>
                   {modal === 'add' ? 'Nuevo producto' : `Editar: ${editing?.name}`}
                 </h2>
                 <p className="text-xs text-gray-400 mt-0.5">Completa los campos y guarda los cambios</p>
@@ -361,10 +361,10 @@ export default function AdminProducts() {
                   </div>
                   {form.image ? (
                     <img src={form.image} alt="preview"
-                      className="w-20 h-20 object-cover border border-gray-200 flex-shrink-0 bg-gray-50"
+                      className="w-20 h-20 rounded-lg object-cover border border-gray-200 flex-shrink-0 bg-gray-50"
                       onError={e => { (e.target as HTMLImageElement).style.opacity = '0.3'; }} />
                   ) : (
-                    <div className="w-20 h-20 border-2 border-dashed border-gray-200 flex-shrink-0 flex flex-col items-center justify-center text-gray-300 gap-1">
+                    <div className="w-20 h-20 rounded-lg border-2 border-dashed border-gray-200 flex-shrink-0 flex flex-col items-center justify-center text-gray-300 gap-1">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
                       </svg>
@@ -396,11 +396,11 @@ export default function AdminProducts() {
                 <div className="flex gap-6">
                   {([
                     { key: 'isNew', label: 'Nuevo ingreso', color: 'text-blue-600' },
-                    { key: 'isBestSeller', label: 'Más vendido', color: 'text-orange-600' },
+                    { key: 'isBestSeller', label: 'Más vendido', color: 'text-[#0B2D6B]' },
                   ] as const).map(({ key, label, color }) => (
                     <label key={key} className="flex items-center gap-2 cursor-pointer select-none">
                       <input type="checkbox" checked={!!form[key]} onChange={e => f(key, e.target.checked)}
-                        className="accent-[#C84B11] w-4 h-4" />
+                        className="accent-[#1976E8] w-4 h-4" />
                       <span className={`text-sm font-medium ${color}`}>{label}</span>
                     </label>
                   ))}
@@ -412,7 +412,7 @@ export default function AdminProducts() {
             </div>
 
             {saveError && (
-              <div className="mx-6 mb-4 flex items-start gap-2.5 text-xs text-red-600 bg-red-50 border border-red-100 px-3 py-2.5">
+              <div className="mx-6 mb-4 flex items-start gap-2.5 text-xs text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2.5">
                 <svg className="flex-shrink-0 mt-0.5" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
                 </svg>
@@ -420,15 +420,15 @@ export default function AdminProducts() {
               </div>
             )}
 
-            <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 sticky bottom-0 bg-white">
+            <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 sticky bottom-0 bg-white rounded-b-2xl">
               <button onClick={() => setModal(null)} disabled={saving}
-                className="px-5 py-2.5 text-sm border border-gray-200 text-gray-500 hover:border-gray-400 transition-colors disabled:opacity-40">
+                className="px-5 py-2.5 rounded-full text-sm border border-gray-200 text-gray-500 hover:border-gray-400 transition-colors disabled:opacity-40">
                 Cancelar
               </button>
               <button
                 onClick={handleSave}
                 disabled={!form.name || !form.price || !form.categoryId || saving}
-                className="px-6 py-2.5 text-sm bg-[#C84B11] text-white font-semibold hover:bg-[#a83a0d] transition-colors disabled:opacity-40"
+                className="px-6 py-2.5 rounded-full text-sm bg-[#1976E8] text-white font-bold hover:bg-[#125fc0] transition-colors disabled:opacity-40"
               >
                 {saving ? 'Guardando…' : modal === 'add' ? 'Crear producto' : 'Guardar cambios'}
               </button>
@@ -440,7 +440,7 @@ export default function AdminProducts() {
   );
 }
 
-const inp = 'w-full border border-gray-200 px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors bg-white';
+const inp = 'w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#1976E8] transition-colors bg-white';
 
 function MF({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (

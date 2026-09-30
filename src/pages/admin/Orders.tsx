@@ -55,12 +55,12 @@ export default function AdminOrders() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>Pedidos</h1>
+          <h1 className="text-xl font-bold text-[#0B2D6B]" style={{ fontFamily: 'Outfit, sans-serif' }}>Pedidos</h1>
           <p className="text-sm text-gray-500 mt-0.5">{orders.length} pedidos · {countFor('PENDIENTE') + countFor('CONFIRMADO') + countFor('EMPACADO')} pendientes</p>
         </div>
         {/* Sort toggle */}
         <button onClick={() => setSortDir(d => d === 'desc' ? 'asc' : 'desc')}
-          className="flex items-center gap-1.5 text-xs border border-gray-200 px-3 py-2 text-gray-500 hover:border-gray-400 transition-colors">
+          className="flex items-center gap-1.5 text-xs border border-gray-200 rounded-lg px-3 py-2 text-gray-500 hover:border-gray-400 transition-colors">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"/><polyline points={sortDir === 'desc' ? '19 12 12 19 5 12' : '5 12 12 5 19 12'}/>
           </svg>
@@ -69,7 +69,7 @@ export default function AdminOrders() {
       </div>
 
       {actionError && (
-        <div className="mb-4 flex items-start gap-2.5 text-xs text-red-600 bg-red-50 border border-red-100 px-3 py-2.5">
+        <div className="mb-4 flex items-start gap-2.5 text-xs text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2.5">
           <svg className="flex-shrink-0 mt-0.5" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
@@ -81,13 +81,13 @@ export default function AdminOrders() {
       )}
 
       {/* Filters */}
-      <div className="bg-white border border-gray-200 p-4 flex flex-wrap gap-3 items-center mb-4">
+      <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4 flex flex-wrap gap-3 items-center mb-4">
         {/* Status tabs */}
-        <div className="flex gap-1 flex-wrap">
+        <div className="flex gap-1.5 flex-wrap">
           {(['all', ...ALL_STATUS] as const).map(s => (
             <button key={s} onClick={() => setFilter(s)}
-              className={`text-xs px-3 py-1.5 font-semibold transition-colors ${
-                filter === s ? 'bg-gray-900 text-white' : 'border border-gray-200 text-gray-500 hover:border-gray-400'
+              className={`text-xs px-3 py-1.5 rounded-full font-semibold transition-colors ${
+                filter === s ? 'bg-[#0B2D6B] text-white' : 'border border-gray-200 text-gray-500 hover:border-gray-400'
               }`}>
               {s === 'all' ? 'Todos' : STATUS_LABELS[s]}
               <span className={`ml-1.5 font-bold ${filter === s ? 'text-white/70' : 'text-gray-400'}`}>
@@ -103,7 +103,7 @@ export default function AdminOrders() {
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar pedido, cliente…"
-            className="pl-9 pr-4 py-2 border border-gray-200 text-sm outline-none focus:border-gray-400 w-56" />
+            className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-[#1976E8] w-56" />
         </div>
       </div>
 
@@ -114,7 +114,7 @@ export default function AdminOrders() {
           const nextStatus = STATUS_NEXT[order.status];
 
           return (
-            <div key={order.id} className={`bg-white border transition-colors ${isExpanded ? 'border-gray-300' : 'border-gray-200 hover:border-gray-300'}`}>
+            <div key={order.id} className={`bg-white border rounded-2xl shadow-sm overflow-hidden transition-colors ${isExpanded ? 'border-[#1976E8]/40' : 'border-gray-100 hover:border-gray-200'}`}>
               {/* Order row */}
               <div className="flex items-center gap-4 px-5 py-4">
                 {/* Expand toggle */}
@@ -130,7 +130,7 @@ export default function AdminOrders() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 flex-wrap">
                     <span className="font-mono text-sm font-bold text-gray-700">{order.id}</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 border ${STATUS_COLORS[order.status]}`}>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${STATUS_COLORS[order.status]}`}>
                       {STATUS_LABELS[order.status]}
                     </span>
                   </div>
@@ -155,18 +155,18 @@ export default function AdminOrders() {
                     confirmStatus?.id === order.id && confirmStatus.status === nextStatus ? (
                       <div className="flex gap-1">
                         <button onClick={() => applyStatus(order.id, nextStatus)}
-                          className="text-xs bg-gray-900 text-white px-2.5 py-1.5 hover:bg-gray-700 transition-colors">
+                          className="text-xs rounded-lg bg-[#1976E8] text-white px-2.5 py-1.5 hover:bg-[#125fc0] transition-colors">
                           Confirmar
                         </button>
                         <button onClick={() => setConfirmStatus(null)}
-                          className="text-xs border border-gray-200 text-gray-500 px-2.5 py-1.5">
+                          className="text-xs rounded-lg border border-gray-200 text-gray-500 px-2.5 py-1.5">
                           No
                         </button>
                       </div>
                     ) : (
                       <button
                         onClick={() => setConfirmStatus({ id: order.id, status: nextStatus })}
-                        className="text-xs border border-gray-300 text-gray-600 px-2.5 py-1.5 hover:border-gray-500 hover:bg-gray-50 transition-colors whitespace-nowrap"
+                        className="text-xs rounded-lg border border-gray-300 text-gray-600 px-2.5 py-1.5 hover:border-[#1976E8] hover:text-[#1976E8] hover:bg-[#EAF2FF] transition-colors whitespace-nowrap"
                       >
                         → {STATUS_LABELS[nextStatus]}
                       </button>
@@ -176,7 +176,7 @@ export default function AdminOrders() {
                   <select
                     value={order.status}
                     onChange={e => applyStatus(order.id, e.target.value as OrderStatus)}
-                    className="border border-gray-200 text-xs px-2 py-1.5 outline-none focus:border-gray-400 bg-white"
+                    className="border border-gray-200 rounded-lg text-xs px-2 py-1.5 outline-none focus:border-[#1976E8] bg-white"
                   >
                     {validOptionsFor(order.status).map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
                   </select>
@@ -190,7 +190,7 @@ export default function AdminOrders() {
                     {/* Items */}
                     <div>
                       <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">Artículos</p>
-                      <div className="space-y-2 bg-white border border-gray-100 p-3">
+                      <div className="space-y-2 bg-white border border-gray-100 rounded-xl p-3">
                         {order.items.map((item, i) => (
                           <div key={i} className="flex items-center justify-between text-sm">
                             <div>
@@ -231,7 +231,7 @@ export default function AdminOrders() {
                         <div className="flex gap-1 flex-wrap">
                           {validOptionsFor(order.status).map(s => (
                             <button key={s} onClick={() => applyStatus(order.id, s)}
-                              className={`text-xs px-2.5 py-1.5 border font-medium transition-colors ${
+                              className={`text-xs px-2.5 py-1.5 rounded-full border font-medium transition-colors ${
                                 order.status === s
                                   ? `${STATUS_COLORS[s]} font-bold`
                                   : 'border-gray-200 text-gray-400 hover:border-gray-400'
@@ -250,7 +250,7 @@ export default function AdminOrders() {
         })}
 
         {filtered.length === 0 && (
-          <div className="bg-white border border-gray-200 px-4 py-16 text-center text-sm text-gray-400">
+          <div className="bg-white border border-gray-100 rounded-2xl px-4 py-16 text-center text-sm text-gray-400">
             No hay pedidos con estos filtros
           </div>
         )}

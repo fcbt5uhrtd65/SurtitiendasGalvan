@@ -46,7 +46,7 @@ export default function Customers() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>Clientes</h1>
+          <h1 className="text-xl font-bold text-[#0B2D6B]" style={{ fontFamily: 'Outfit, sans-serif' }}>Clientes</h1>
           <p className="text-sm text-gray-500 mt-0.5">{customers.length} registrados · {activeCustomers} con compras</p>
         </div>
       </div>
@@ -59,8 +59,8 @@ export default function Customers() {
           { label: 'Gasto promedio', value: formatPrice(avgSpend), sub: 'por cliente activo' },
           { label: 'Ciudad top', value: topCity?.[0] ?? '—', sub: `${topCity?.[1] ?? 0} clientes` },
         ].map(s => (
-          <div key={s.label} className="bg-white border border-gray-200 p-4">
-            <p className="text-lg font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>{s.value}</p>
+          <div key={s.label} className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4">
+            <p className="text-lg font-bold text-[#0B2D6B]" style={{ fontFamily: 'Outfit, sans-serif' }}>{s.value}</p>
             <p className="text-xs font-semibold text-gray-600 mt-0.5">{s.label}</p>
             <p className="text-[11px] text-gray-400">{s.sub}</p>
           </div>
@@ -71,16 +71,16 @@ export default function Customers() {
         {/* Table */}
         <div className="flex-1 min-w-0">
           {/* Toolbar */}
-          <div className="bg-white border border-gray-200 p-4 flex gap-3 items-center mb-3">
+          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4 flex gap-3 items-center mb-3">
             <div className="relative flex-1">
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
               <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar cliente…"
-                className="w-full pl-9 pr-4 py-2 border border-gray-200 text-sm outline-none focus:border-gray-400" />
+                className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-[#1976E8]" />
             </div>
             <select value={sort} onChange={e => setSort(e.target.value as SortKey)}
-              className="border border-gray-200 text-sm px-3 py-2 outline-none focus:border-gray-400 bg-white">
+              className="border border-gray-200 rounded-lg text-sm px-3 py-2 outline-none focus:border-[#1976E8] bg-white">
               <option value="spent-desc">Mayor gasto</option>
               <option value="orders-desc">Más pedidos</option>
               <option value="name">Nombre A-Z</option>
@@ -89,7 +89,7 @@ export default function Customers() {
             </select>
           </div>
 
-          <div className="bg-white border border-gray-200">
+          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50">
@@ -103,11 +103,11 @@ export default function Customers() {
                   <tr
                     key={c.id}
                     onClick={() => setSelected(selected === c.id ? null : c.id)}
-                    className={`cursor-pointer transition-colors ${selected === c.id ? 'bg-orange-50 border-l-2 border-l-[#C84B11]' : 'hover:bg-gray-50'}`}
+                    className={`cursor-pointer transition-colors ${selected === c.id ? 'bg-[#EAF2FF] border-l-2 border-l-[#1976E8]' : 'hover:bg-gray-50'}`}
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500 flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-[#0B2D6B] flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
                           {c.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase()}
                         </div>
                         <div>
@@ -147,24 +147,24 @@ export default function Customers() {
         {/* Detail panel */}
         {selectedCustomer && (
           <div className="w-72 flex-shrink-0">
-            <div className="bg-white border border-gray-200 sticky top-6">
+            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm sticky top-6 overflow-hidden">
               {/* Profile */}
-              <div className="p-5 border-b border-gray-100">
+              <div className="p-5 border-b border-gray-100 bg-gradient-to-br from-[#0B2D6B] to-[#1976E8]">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-gray-900 flex items-center justify-center text-white font-bold text-base">
+                  <div className="w-12 h-12 rounded-full bg-white/15 border border-white/20 flex items-center justify-center text-white font-bold text-base">
                     {selectedCustomer.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase()}
                   </div>
-                  <button onClick={() => setSelected(null)} className="text-gray-400 hover:text-gray-600">
+                  <button onClick={() => setSelected(null)} className="text-white/60 hover:text-white">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                     </svg>
                   </button>
                 </div>
-                <p className="font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>{selectedCustomer.name}</p>
-                <p className="text-xs text-gray-400 mt-0.5">{selectedCustomer.email}</p>
-                <p className="text-xs text-gray-400">{selectedCustomer.phone}</p>
+                <p className="font-bold text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>{selectedCustomer.name}</p>
+                <p className="text-xs text-white/70 mt-0.5">{selectedCustomer.email}</p>
+                <p className="text-xs text-white/70">{selectedCustomer.phone}</p>
                 {selectedCustomer.totalOrders >= 3 && (
-                  <span className="mt-2 inline-block text-[10px] border border-[#C84B11] text-[#C84B11] px-2 py-0.5 font-bold uppercase">
+                  <span className="mt-2 inline-block text-[10px] bg-[#F4C20D] text-[#0B2D6B] rounded-full px-2.5 py-0.5 font-bold uppercase">
                     Cliente frecuente
                   </span>
                 )}
@@ -191,7 +191,7 @@ export default function Customers() {
                 {customerOrders.length > 0 ? (
                   <div className="space-y-2">
                     {customerOrders.map(o => (
-                      <div key={o.id} className="border border-gray-100 p-2.5 text-xs">
+                      <div key={o.id} className="border border-gray-100 rounded-xl p-2.5 text-xs">
                         <div className="flex justify-between items-center mb-1">
                           <span className="font-mono font-bold text-gray-600">{o.id}</span>
                           <span className="font-bold text-gray-900">{formatPrice(o.total)}</span>

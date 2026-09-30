@@ -47,34 +47,34 @@ export default function AdminLayout() {
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-56 bg-gray-950 flex flex-col flex-shrink-0 border-r border-gray-800">
+      <aside className="w-56 bg-[#0B2D6B] flex flex-col flex-shrink-0">
         {/* Brand */}
-        <div className="px-5 h-14 flex items-center border-b border-gray-800 flex-shrink-0">
+        <div className="px-5 h-14 flex items-center border-b border-white/10 flex-shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 bg-[#C84B11] flex items-center justify-center flex-shrink-0">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <div className="w-7 h-7 rounded-lg bg-[#1976E8] flex items-center justify-center flex-shrink-0">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
               </svg>
             </div>
             <div>
               <p className="text-white text-xs font-bold leading-none" style={{ fontFamily: 'Outfit, sans-serif' }}>Surtitiendas</p>
-              <p className="text-gray-500 text-[10px] leading-tight">Admin Panel</p>
+              <p className="text-white/50 text-[10px] leading-tight mt-0.5">Admin Panel</p>
             </div>
           </div>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-          <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest px-3 mb-2">Menú principal</p>
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest px-3 mb-2">Menú principal</p>
           {navItems.map(item => (
             <NavLink
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex items-center justify-between gap-3 px-3 py-2.5 text-sm font-medium transition-colors ${
+                `flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-[#C84B11] text-white'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                    ? 'bg-[#1976E8] text-white'
+                    : 'text-white/60 hover:text-white hover:bg-white/10'
                 }`
               }
             >
@@ -83,12 +83,12 @@ export default function AdminLayout() {
                 {item.label}
               </span>
               {item.label === 'Pedidos' && pendingOrders > 0 && (
-                <span className="bg-yellow-400 text-gray-900 text-[10px] font-bold px-1.5 py-0.5 leading-none min-w-[18px] text-center">
+                <span className="bg-[#F4C20D] text-[#0B2D6B] text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none min-w-[18px] text-center">
                   {pendingOrders}
                 </span>
               )}
               {item.label === 'Productos' && lowStock > 0 && (
-                <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 leading-none min-w-[18px] text-center">
+                <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none min-w-[18px] text-center">
                   {lowStock}
                 </span>
               )}
@@ -97,19 +97,19 @@ export default function AdminLayout() {
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-gray-800 p-3 flex-shrink-0">
+        <div className="border-t border-white/10 p-3 flex-shrink-0">
           <div className="flex items-center gap-2.5 px-3 py-2 mb-1">
-            <div className="w-7 h-7 bg-gray-700 flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0">
+            <div className="w-7 h-7 rounded-full bg-white/15 border border-white/20 flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0">
               {(currentUser?.name ?? 'Admin').split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase()}
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-semibold text-gray-300 leading-none truncate">{currentUser?.name || 'Administrador'}</p>
-              <p className="text-[10px] text-gray-600 mt-0.5 truncate">{currentUser?.email}</p>
+              <p className="text-xs font-semibold text-white leading-none truncate">{currentUser?.name || 'Administrador'}</p>
+              <p className="text-[10px] text-white/40 mt-0.5 truncate">{currentUser?.email}</p>
             </div>
           </div>
           <button
             onClick={() => navigate('/home')}
-            className="flex items-center gap-2 px-3 py-2 text-xs text-gray-500 hover:text-gray-300 transition-colors w-full"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-white/50 hover:text-white hover:bg-white/10 transition-colors w-full"
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
@@ -118,7 +118,7 @@ export default function AdminLayout() {
           </button>
           <button
             onClick={() => { logout(); navigate('/admin'); }}
-            className="flex items-center gap-2 px-3 py-2 text-xs text-gray-500 hover:text-red-400 transition-colors w-full"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-white/50 hover:text-red-300 hover:bg-white/10 transition-colors w-full"
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
@@ -139,14 +139,14 @@ export default function AdminLayout() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="9 18 15 12 9 6"/>
                 </svg>
-                <span className="font-semibold text-gray-900">{currentLabel}</span>
+                <span className="font-semibold text-[#0B2D6B]">{currentLabel}</span>
               </>
             )}
           </div>
 
           <div className="flex items-center gap-3">
             {alerts > 0 && (
-              <div className="flex items-center gap-1.5 text-xs bg-amber-50 border border-amber-200 text-amber-700 px-2.5 py-1.5 font-medium">
+              <div className="flex items-center gap-1.5 text-xs bg-amber-50 border border-amber-200 text-amber-700 rounded-full px-3 py-1.5 font-medium">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
                 </svg>
